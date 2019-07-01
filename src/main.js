@@ -6,7 +6,8 @@ import router from './router'
 import store from './store'
 
 Vue.config.productionTip = false
-
+Vue.$token = ''
+Vue.$baseuri = 'https://ytkeno.top:4443'
 new Vue({
   router,
   store,
