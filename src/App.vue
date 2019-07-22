@@ -2,7 +2,7 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-title class="headline text-uppercase">
-        <span>医药连锁公司</span>
+        <span>PRE MED ELEC</span>
         <span class="font-weight-light">管理端</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -12,19 +12,16 @@
     </v-toolbar>
 
     <v-content>
-      <Login/>
+      <router-view/>
     </v-content>
   </v-app>
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld'
-import Login from "./components/Login";
 export default {
   name: "App",
-  components: {
-    Login
-  },
+  components: {},
   data() {
     return {
       //

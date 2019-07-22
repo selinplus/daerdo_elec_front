@@ -5,7 +5,7 @@
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
-              <v-toolbar dark color="primary">
+              <v-toolbar dark color="amber">
                 <v-toolbar-title>登录</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
@@ -38,7 +38,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="doLogin">登录</v-btn>
+                <v-btn color="amber" @click="doLogin">登录</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import Vue from "vue";
+import { mapMutations } from "vuex";
 export default {
   data: () => ({
     drawer: null,
@@ -75,10 +75,15 @@ export default {
   props: {
     source: String
   },
+
   methods: {
-    doLogin: function() {
+    ...mapMutations({
+      addToken: "setToken"
+    }),
+    doLogin() {
       if (this.username && this.password) {
-        Vue.axios
+        let self = this;
+        this.axios
           .get(
             "/mendian/auth" +
               "?username=" +
@@ -88,15 +93,20 @@ export default {
               "&version=1.0.0"
           )
           .then(res => {
-            if (res.code == 200) {
-              Vue.$token = res.data.token;
-              this.text = res.msg;
-              this.snackbar = true;
+            let data = res.data;
+            if (data.code == 200) {
+              self.addToken(data.data.token);
+              self.text = data.msg;
+              self.snackbar = true;
+              self.$router.push("home");
             } else {
-              this.text = "用户名或者密码错误";
-              this.snackbar = true;
+              self.text = data.msg;
+              self.snackbar = true;
             }
           });
+      } else {
+        this.text = "用户名密码未填写";
+        this.snackbar = true;
       }
     }
   }

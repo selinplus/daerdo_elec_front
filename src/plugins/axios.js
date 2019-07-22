@@ -1,24 +1,28 @@
+/* eslint-disable no-console */
 "use strict";
 
 import Vue from 'vue';
 import axios from "axios";
-
+import store from '../store';
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {
-  baseURL: process.env.baseURL || process.env.apiUrl || "https://ytkeno.top:4443",
+  baseURL: process.env.baseURL || process.env.apiUrl || "https://ytsw.info:4443",
   // timeout: 60 * 1000, // Timeout
   withCredentials: false, // Check cross-site Access-Control
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 };
 
 const _axios = axios.create(config);
-
+// eslint-disable-next-line no-unused-vars
 _axios.interceptors.request.use(
-  function (config) {
-    // Do something before request is sent
+  (config) => {
+    if (store.state.token) {
+      config.headers.authorization = store.state.token;
+    }
     return config;
   },
   function (error) {
