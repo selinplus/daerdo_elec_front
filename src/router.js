@@ -4,28 +4,47 @@ import Index from './views/Index.vue'
 import Home from './views/Home.vue'
 import Welcome from './views/content/Welcome.vue'
 import Yishi from './views/content/Yishi.vue'
+import db from './utils/localstorage'
 Vue.use(Router)
 
-export default new Router({
-  routes: [
+// export default new Router({
+//   routes: 
+// })
+
+let constRouter = [
     {
       path: '/',
-      name: 'index',
+      name: '登录页',
       component: Index
     },
     {
       path: '/home',
-      name: 'home',
+      name: '首页',
       component: Home,
       children: [
         {
-          path: '/index',
+          path: 'index',
           name: 'index',
           component: Welcome,
         },
         {
-          path: '/yishi',
-          name: 'yishi',
+          path: 'yishi',
+          name: '审核',
+          component: Yishi,
+        },
+        {
+          path: 'query',
+          name: '查询',
+          component: Yishi,
+        },
+        {
+          path: 'statis',
+          name: '统计',
+          component: Yishi,
+        },
+        {
+          path: 'settings',
+          name: '设置',
           component: Yishi,
         },
       ],
@@ -39,107 +58,78 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     }
   ]
-})
-/*
-let constRouter = [
-  {
-    path: '/login',
-    name: '登录页',
-    component: LoginView
-  },
-  {
-    path: '/index',
-    name: '首页',
-    redirect: '/home'
-  }
-]
 
 let router = new Router({
   routes: constRouter
 })
 
-const whiteList = ['/login']
+const whiteList = '/'
 
-let asyncRouter
+//let asyncRouter
 
 // 导航守卫，渲染动态路由
 router.beforeEach((to, from, next) => {
-  if (whiteList.indexOf(to.path) !== -1) {
+  if (whiteList === to.path) {
     next()
   }
-  let token = db.get('USER_TOKEN')
-  let user = db.get('USER')
-  let userRouter = get('USER_ROUTER')
-  if (token.length && user) {
-    if (!asyncRouter) {
-      if (!userRouter) {
-        request.get(`menu/${user.username}`).then((res) => {
-          asyncRouter = res.data
-          save('USER_ROUTER', asyncRouter)
-          go(to, next)
-        })
-      } else {
-        asyncRouter = userRouter
-        go(to, next)
-      }
+  let token = db.get('token')
+  // let user = db.get('USER')
+  // let userRouter = get('USER_ROUTER')
+  if (token.length) {    
+      next(true)    
     } else {
-      next()
-    }
-  } else {
-    next('/login')
-  }
-})
+      next('/')
+  }  
+});
 
-function go (to, next) {
-  asyncRouter = filterAsyncRouter(asyncRouter)
-  router.addRoutes(asyncRouter)
-  next({...to, replace: true})
-}
+// function go (to, next) {
+//   asyncRouter = filterAsyncRouter(asyncRouter)
+//   router.addRoutes(asyncRouter)
+//   next({...to, replace: true})
+// }
 
-function save (name, data) {
-  localStorage.setItem(name, JSON.stringify(data))
-}
+// function save (name, data) {
+//   localStorage.setItem(name, JSON.stringify(data))
+// }
 
-function get (name) {
-  return JSON.parse(localStorage.getItem(name))
-}
+// function get (name) {
+//   return JSON.parse(localStorage.getItem(name))
+// }
 
-function filterAsyncRouter (routes) {
-  return routes.filter((route) => {
-    let component = route.component
-    if (component) {
-      switch (route.component) {
-        case 'MenuView':
-          route.component = MenuView
-          break
-        case 'PageView':
-          route.component = PageView
-          break
-        case 'EmptyPageView':
-          route.component = EmptyPageView
-          break
-        case 'HomePageView':
-          route.component = HomePageView
-          break
-        default:
-          route.component = view(component)
-      }
-      if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children)
-      }
-      return true
-    }
-  })
-}
+// function filterAsyncRouter (routes) {
+//   return routes.filter((route) => {
+//     let component = route.component
+//     if (component) {
+//       switch (route.component) {
+//         case 'MenuView':
+//           route.component = MenuView
+//           break
+//         case 'PageView':
+//           route.component = PageView
+//           break
+//         case 'EmptyPageView':
+//           route.component = EmptyPageView
+//           break
+//         case 'HomePageView':
+//           route.component = HomePageView
+//           break
+//         default:
+//           route.component = view(component)
+//       }
+//       if (route.children && route.children.length) {
+//         route.children = filterAsyncRouter(route.children)
+//       }
+//       return true
+//     }
+//   })
+// }
 
-function view (path) {
-  return function (resolve) {
-    import(`@/views/${path}.vue`).then(mod => {
-      resolve(mod)
-    })
-  }
-}
+// function view (path) {
+//   return function (resolve) {
+//     import(`@/views/${path}.vue`).then(mod => {
+//       resolve(mod)
+//     })
+//   }
+// }
 
 export default router
-
-*/

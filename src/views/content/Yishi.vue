@@ -1,14 +1,30 @@
 <template>
   <v-container>
+    <v-layout row wrap fluid>
     <template v-for="(item, i) in items">
-      <v-card :key="i" class="mx-auto" color="orange" dark max-width="400">
+      <v-card :key="i" class="mx-auto" color="amber darken-2" width="350">
         <v-card-title>
-          <v-icon large left>mdi-twitter</v-icon>
-          <span class="title font-weight-light">{{item.name}}</span>
+          <v-icon large left>home</v-icon>
+          <span class="title font-weight-bold text--olive">{{item.zydw}}</span>
         </v-card-title>
 
-        <v-card-text class="headline font-weight-bold">"{{item.jianjie}}"</v-card-text>
-
+        <v-card-text class="headline" style="height:100px;">"{{item.jianjie}}"</v-card-text>
+        <v-layout>
+          <v-flex xs6>
+            <v-img
+              :src="item.zyz_uri"
+              height="130px"
+              contain
+            ></v-img>
+          </v-flex>
+          <v-flex xs6>
+            <v-img
+              :src="item.zgz_uri"
+              height="130px"
+              contain
+            ></v-img>
+          </v-flex>
+        </v-layout>
         <v-card-actions>
           <v-list-tile class="grow">
             <v-list-tile-avatar color="grey darken-3">
@@ -16,24 +32,25 @@
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title>{{item.name}}</v-list-tile-title>
+              <v-list-tile-title class="text--orange--darken-4">{{item.name}}</v-list-tile-title>
             </v-list-tile-content>
 
-            <v-layout align-center justify-end>
-              <v-icon class="mr-1">mdi-heart</v-icon>
-              <span class="subheading mr-2">256</span>
-              <span class="mr-1">·</span>
-              <v-icon class="mr-1">mdi-share-variant</v-icon>
-              <span class="subheading">45</span>
+            <v-layout v-show="item.review" align-center justify-end>
+              <v-btn flat icon color="green-darken">
+                <v-icon :click="reveal">thumb_up</v-icon>
+              </v-btn>
             </v-layout>
           </v-list-tile>
         </v-card-actions>
+        <v-spacer color="white"></v-spacer>
       </v-card>
     </template>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
+/* eslint-disable */ 
 export default {
   data: () => ({
     items: []
@@ -42,6 +59,11 @@ export default {
     this.$axios.get("/api/v1/yishis").then(res => {
       this.items = res.data.data;
     });
+  },
+  methods:{
+    reveal(id){
+      console.log(id);
+    }
   }
 };
 </script>

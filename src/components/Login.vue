@@ -85,7 +85,7 @@ export default {
         let self = this;
         this.axios
           .get(
-            "/mendian/auth" +
+            "/yaodian/auth" +
               "?username=" +
               this.username +
               "&password=" +
