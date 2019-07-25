@@ -98,7 +98,7 @@ export default {
               self.addToken(data.data.token);
               self.text = data.msg;
               self.snackbar = true;
-              self.$router.push("home");
+              self.$router.push("home/index");
             } else {
               self.text = data.msg;
               self.snackbar = true;

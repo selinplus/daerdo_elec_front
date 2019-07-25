@@ -6,7 +6,7 @@ import Welcome from './views/content/Welcome.vue'
 import Review from './views/content/Review.vue'
 import Unreview from './views/content/Unreview.vue'
 import Query from './views/content/Query.vue'
-import db from './utils/localstorage'
+import store from './store'
 Vue.use(Router)
 
 // export default new Router({
@@ -14,57 +14,57 @@ Vue.use(Router)
 // })
 
 let constRouter = [
-    {
-      path: '/',
-      name: '登录页',
-      component: Index
-    },
-    {
-      path: '/home',
-      name: '首页',
-      component: Home,
-      children: [
-        {
-          path: 'index',
-          name: 'index',
-          component: Welcome,
-        },
-        {
-          path: 'review',
-          name: '已审核',
-          component: Review,
-        },
-        {
-          path: 'unreview',
-          name: '未审核',
-          component: Unreview,
-        },
-        {
-          path: 'query',
-          name: '查询',
-          component: Query,
-        },
-        {
-          path: 'statis',
-          name: '统计',
-          component: Welcome,
-        },
-        {
-          path: 'settings',
-          name: '设置',
-          component: Welcome,
-        },
-      ],
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
-  ]
+  {
+    path: '/',
+    name: '登录页',
+    component: Index
+  },
+  {
+    path: '/home',
+    name: '首页',
+    component: Home,
+    children: [
+      {
+        path: 'index',
+        name: 'index',
+        component: Welcome,
+      },
+      {
+        path: 'review',
+        name: '已审核',
+        component: Review,
+      },
+      {
+        path: 'unreview',
+        name: '未审核',
+        component: Unreview,
+      },
+      {
+        path: 'query',
+        name: '查询',
+        component: Query,
+      },
+      {
+        path: 'statis',
+        name: '统计',
+        component: Welcome,
+      },
+      {
+        path: 'settings',
+        name: '设置',
+        component: Welcome,
+      },
+    ],
+  },
+  {
+    path: '/about',
+    name: 'about',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+  }
+]
 
 let router = new Router({
   routes: constRouter
@@ -79,14 +79,12 @@ router.beforeEach((to, from, next) => {
   if (whiteList === to.path) {
     next()
   }
-  let token = db.get('token')
-  // let user = db.get('USER')
-  // let userRouter = get('USER_ROUTER')
-  if (token.length) {    
-      next(true)    
-    } else {
-      next('/')
-  }  
+  let token = store.state.token
+  if (token.length) {
+    next(true)
+  } else {
+    next('/')
+  }
 });
 
 // function go (to, next) {

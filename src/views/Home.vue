@@ -1,6 +1,6 @@
 <template>
-  <v-app id="keep">
-    <v-navigation-drawer v-model="drawer" fixed clipped class="amber" app>
+  <v-container id="keep">
+    <v-navigation-drawer v-model="drawer" app fixed clipped class="amber">
       <v-list dense class="amber">
         <template v-for="(item, i) in items">
           <v-layout v-if="item.heading" :key="i" row align-center>
@@ -12,7 +12,7 @@
             </v-flex>
           </v-layout>
           <v-divider v-else-if="item.divider" :key="i" dark class="my-3"></v-divider>
-          <v-list-tile v-else :key="i" :to="item.path">
+          <v-list-tile v-else :key="i" :to="item.path" @click="drawer = !drawer">
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
@@ -45,7 +45,7 @@
       {{ text }}
       <v-btn dark flat @click="snackbar = false">Close</v-btn>
     </v-snackbar>
-  </v-app>
+  </v-container>
 </template>
 
 <script>
@@ -74,14 +74,7 @@ export default {
   props: {
     source: String
   },
-  methods: {
-    navaigator: function(i) {
-      this.text = this.$token;
-      this.snackbar = true;
-      console.log(i);
-      this.$router.push("yishi");
-    }
-  }
+  methods: {}
 };
 </script>
 

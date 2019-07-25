@@ -4,6 +4,7 @@
 import Vue from 'vue';
 import axios from "axios";
 import store from '../store';
+import router from '../router'
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
@@ -35,10 +36,20 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
   function (response) {
     // Do something with response data
+    // eslint-disable-next-line
+    console.log(response.data);
+    if (response.data.code == 20001) {
+      router.push('/');
+    }
     return response;
   },
   function (error) {
     // Do something with response error
+    console.log(error.message);
+    if (error.message.indexOf('401') != -1) {
+      console.log('not auth')
+      router.push('/');
+    }
     return Promise.reject(error);
   }
 );
