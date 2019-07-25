@@ -60,7 +60,8 @@ export default {
     text: "",
     items: [
       { icon: "lightbulb_outline", text: "首页", path: "/home/index" },
-      { icon: "touch_app", text: "审核", path: "/home/yishi" },
+      { icon: "touch_app", text: "未审核", path: "/home/unreview" },
+      { icon: "touch_app", text: "已审核", path: "/home/review" },
       { divider: true },
       { heading: "Labels" },
       { icon: "search", text: "查询", path: "/home/query" },

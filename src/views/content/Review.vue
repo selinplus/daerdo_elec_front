@@ -35,9 +35,9 @@
               <v-list-tile-title class="text--orange--darken-4">{{item.name}}</v-list-tile-title>
             </v-list-tile-content>
 
-            <v-layout v-show="item.review" align-center justify-end>
+            <v-layout v-show="!item.review" align-center justify-end>
               <v-btn flat icon color="green-darken">
-                <v-icon :click="reveal">thumb_up</v-icon>
+                <v-icon @click="reveal(item.ID)">thumb_up</v-icon>
               </v-btn>
             </v-layout>
           </v-list-tile>
@@ -56,7 +56,7 @@ export default {
     items: []
   }),
   mounted() {
-    this.$axios.get("/api/v1/yishis").then(res => {
+    this.$axios.get("/api/v1/yishi/yisrev").then(res => {
       this.items = res.data.data;
     });
   },

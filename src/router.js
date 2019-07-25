@@ -3,7 +3,9 @@ import Router from 'vue-router'
 import Index from './views/Index.vue'
 import Home from './views/Home.vue'
 import Welcome from './views/content/Welcome.vue'
-import Yishi from './views/content/Yishi.vue'
+import Review from './views/content/Review.vue'
+import Unreview from './views/content/Unreview.vue'
+import Query from './views/content/Query.vue'
 import db from './utils/localstorage'
 Vue.use(Router)
 
@@ -28,24 +30,29 @@ let constRouter = [
           component: Welcome,
         },
         {
-          path: 'yishi',
-          name: '审核',
-          component: Yishi,
+          path: 'review',
+          name: '已审核',
+          component: Review,
+        },
+        {
+          path: 'unreview',
+          name: '未审核',
+          component: Unreview,
         },
         {
           path: 'query',
           name: '查询',
-          component: Yishi,
+          component: Query,
         },
         {
           path: 'statis',
           name: '统计',
-          component: Yishi,
+          component: Welcome,
         },
         {
           path: 'settings',
           name: '设置',
-          component: Yishi,
+          component: Welcome,
         },
       ],
     },
