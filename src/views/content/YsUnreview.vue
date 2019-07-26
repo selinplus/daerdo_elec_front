@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout row wrap fluid>
+    <v-layout row wrap fluid v-if="items.length>0">
       <template v-for="(item, i) in items">
         <v-card :key="i" class="mx-auto" color="amber darken-2" width="300">
           <v-card-title>
@@ -38,6 +38,34 @@
         </v-card>
       </template>
     </v-layout>
+    <v-layout v-if="items.length==0">
+      <v-flex xs12 sm6 offset-sm3>
+      <v-card>
+        <v-img
+          class="white--text"
+          height="200px"
+          src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+        >
+          <v-container fill-height fluid>
+            <v-layout fill-height>
+              <v-flex xs12 align-end flexbox>
+                <span class="headline">没有未审核的医师</span>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-img>        
+      </v-card>
+    </v-flex>
+    </v-layout>
+    <v-snackbar
+      v-model="snackbar"
+      :color="color"
+      :multi-line="mode === 'multi-line'"
+      :timeout="timeout"
+      :vertical="mode === 'vertical'"
+    >
+      {{ text }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -46,16 +74,30 @@
 
 export default {
   data: () => ({
-    items: []
+    items: [],
+    snackbar: false,
+    color: "orange",
+    mode: "",
+    timeout: 3000,
+    text: "",
   }),
   mounted() {
-    this.$axios.get("/api/v1/yishi/yisrev").then(res => {
+    this.$axios.get("/api/v1/yishi/yisunrev").then(res => {
       this.items = res.data.data;
     });
   },
   methods: {
     reveal(id) {
-      console.log(id);
+      this.$axios.get("/api/v1/yishi/eidtyisrev?id="+id).then(res => {
+        if(res.data.code ==200){
+          this.text ='审核成功'
+          this.snackbar = true
+        }else{
+          this.color = 'red'
+          this.text ='审核未成功'
+          this.snackbar = true
+        }
+      });
     }
   }
 };

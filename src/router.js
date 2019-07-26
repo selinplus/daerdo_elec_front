@@ -3,8 +3,11 @@ import Router from 'vue-router'
 import Index from './views/Index.vue'
 import Home from './views/Home.vue'
 import Welcome from './views/content/Welcome.vue'
-import Review from './views/content/Review.vue'
-import Unreview from './views/content/Unreview.vue'
+import YsReview from './views/content/YsReview.vue'
+import YsUnreview from './views/content/YsUnreview.vue'
+import YaosReview from './views/content/YaosReview.vue'
+import YaosUnreview from './views/content/YaosUnreview.vue'
+import AddMedicine from './views/content/AddMedicine.vue'
 import Query from './views/content/Query.vue'
 import store from './store'
 Vue.use(Router)
@@ -30,14 +33,29 @@ let constRouter = [
         component: Welcome,
       },
       {
-        path: 'review',
-        name: '已审核',
-        component: Review,
+        path: 'ysreview',
+        name: '已审核医师',
+        component: YsReview,
       },
       {
-        path: 'unreview',
-        name: '未审核',
-        component: Unreview,
+        path: 'ysunreview',
+        name: '未审核医师',
+        component: YsUnreview,
+      },
+      {
+        path: 'yaosreview',
+        name: '已审核医师',
+        component: YaosReview,
+      },
+      {
+        path: 'yaosunreview',
+        name: '未审核医师',
+        component: YaosUnreview,
+      },
+      {
+        path: 'medicine',
+        name: '增加药品',
+        component: AddMedicine,
       },
       {
         path: 'query',

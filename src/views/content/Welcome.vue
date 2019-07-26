@@ -1,5 +1,5 @@
 <template>
   <v-container>
-    <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
+    <v-img :src="require('../../assets/Website-under-construction.jpg')"></v-img>
   </v-container>
 </template>

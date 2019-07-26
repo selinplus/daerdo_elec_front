@@ -8,16 +8,16 @@
               <v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
             </v-flex>
             <v-flex xs6 class="text-xs-right">
-              <v-btn small flat>edit</v-btn>
+              <v-btn small flat><v-icon>flare</v-icon></v-btn>
             </v-flex>
           </v-layout>
           <v-divider v-else-if="item.divider" :key="i" dark class="my-3"></v-divider>
           <v-list-tile v-else :key="i" :to="item.path" @click="drawer = !drawer">
             <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon class="olive--text">{{ item.icon }}</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title class="text--darken-4 white--text">{{ item.text }}</v-list-tile-title>
+              <v-list-tile-title class="white--text subtitle-1 font-weight-bold">{{ item.text }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </template>
@@ -54,16 +54,20 @@ export default {
   data: () => ({
     drawer: null,
     snackbar: false,
-    color: "",
+    color: "orange",
     mode: "",
     timeout: 3000,
     text: "",
     items: [
+      { heading: "管理功能" },
       { icon: "lightbulb_outline", text: "首页", path: "/home/index" },
-      { icon: "touch_app", text: "未审核", path: "/home/unreview" },
-      { icon: "touch_app", text: "已审核", path: "/home/review" },
+      { icon: "rate_review", text: "未审核医师", path: "/home/ysunreview" },
+      { icon: "beenhere", text: "已审核医师", path: "/home/ysreview" },
+      { icon: "rate_review", text: "未审核药师", path: "/home/yaosunreview" },
+      { icon: "beenhere", text: "已审核药师", path: "/home/yaosreview" },
+      { icon: "group_add", text: "增加药品", path: "/home/medicine" },
       { divider: true },
-      { heading: "Labels" },
+      { heading: "辅助功能" },
       { icon: "search", text: "查询", path: "/home/query" },
       { divider: true },
       { icon: "archive", text: "统计", path: "/home/statis" },
