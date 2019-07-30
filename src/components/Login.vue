@@ -6,7 +6,7 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="amber">
-                <v-toolbar-title>登录</v-toolbar-title>
+                <v-toolbar-title>电子处方管理端</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
@@ -78,7 +78,8 @@ export default {
 
   methods: {
     ...mapMutations({
-      addToken: "setToken"
+      addToken: "setToken",
+      addUsername: "setUsername"
     }),
     doLogin() {
       if (this.username && this.password) {
@@ -96,6 +97,7 @@ export default {
             let data = res.data;
             if (data.code == 200) {
               self.addToken(data.data.token);
+              self.addUsername(self.username);
               self.text = data.msg;
               self.snackbar = true;
               self.$router.push("home/index");
