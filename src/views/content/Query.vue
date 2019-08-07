@@ -60,31 +60,7 @@
           <td class=""><v-btn @click="show(props.item.cfduri)"><v-icon small>print</v-icon></v-btn></td>
         </tr>
       </template>
-    </v-data-table>
-    <v-speed-dial
-      v-model="fab"
-      bottom
-      left
-      direction="right"
-      open-on-hover
-      transition="slide-y-reverse-transition"
-    >
-      <template v-slot:activator>
-        <v-btn v-model="fab" color="blue darken-2" dark fab>
-          <v-icon v-if="fab">close</v-icon>
-          <v-icon v-else>account_circle</v-icon>
-        </v-btn>
-      </template>
-      <v-btn fab dark small color="green">
-        <v-icon>edit</v-icon>
-      </v-btn>
-      <v-btn fab dark small color="indigo" @click="dialog=!dialog">
-        <v-icon>add</v-icon>
-      </v-btn>
-      <v-btn fab dark small color="red">
-        <v-icon>delete</v-icon>
-      </v-btn>
-    </v-speed-dial>
+    </v-data-table>    
     <v-snackbar v-model="snackbar" :color="color" :timeout="timeout">
       {{ text }}
       <v-btn dark flat @click="snackbar = false">Close</v-btn>
@@ -100,16 +76,8 @@ export default {
     snackbar: false,
     color: "orange",
     timeout: 3000,
-    text: "",
-    mc: null,
-    style: null,
-    unit: null,
-    source: null,
-    src: null,
-    rules: [
-      v => !!v || "内容必须填写",
-      v => (v && v.length <= 100) || "不能超过50字"
-    ],
+    text: "",   
+    src: null,    
     pagination: {
       sortBy: "ID"
     },
@@ -128,7 +96,11 @@ export default {
     ],
     desserts: []
   }),
-
+  mounted() {
+    this.$axios.get("/api/v1/prescription/cfuriysmt").then(res => {
+      if (res.data.data) this.desserts = res.data.data;
+    });
+  },
   methods: {
     toggleAll() {
       if (this.selected.length) this.selected = [];

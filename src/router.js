@@ -9,6 +9,8 @@ import YaosReview from './views/content/YaosReview.vue'
 import YaosUnreview from './views/content/YaosUnreview.vue'
 import AddMedicine from './views/content/AddMedicine.vue'
 import Query from './views/content/Query.vue'
+import Statis from './views/content/Statis.vue'
+
 import store from './store'
 Vue.use(Router)
 
@@ -59,13 +61,13 @@ let constRouter = [
       },
       {
         path: 'query',
-        name: '查询',
+        name: '处方單',
         component: Query,
       },
       {
         path: 'statis',
         name: '统计',
-        component: Welcome,
+        component: Statis,
       },
       {
         path: 'settings',
@@ -73,14 +75,6 @@ let constRouter = [
         component: Welcome,
       },
     ],
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
   }
 ]
 
