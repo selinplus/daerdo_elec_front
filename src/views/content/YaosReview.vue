@@ -81,7 +81,7 @@ export default {
   data: () => ({
     items: [],
     dialog: null,
-    img: null
+    img: ''
   }),
   mounted() {
     this.$axios.get("/api/v1/yaoshi/yaosrev").then(res => {

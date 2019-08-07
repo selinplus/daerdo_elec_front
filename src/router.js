@@ -8,7 +8,7 @@ import YsUnreview from './views/content/YsUnreview.vue'
 import YaosReview from './views/content/YaosReview.vue'
 import YaosUnreview from './views/content/YaosUnreview.vue'
 import AddMedicine from './views/content/AddMedicine.vue'
-import Query from './views/content/Query.vue'
+import CfdPrint from './views/content/CfdPrint.vue'
 import Statis from './views/content/Statis.vue'
 
 import store from './store'
@@ -60,9 +60,9 @@ let constRouter = [
         component: AddMedicine,
       },
       {
-        path: 'query',
+        path: 'cfd',
         name: '处方單',
-        component: Query,
+        component: CfdPrint,
       },
       {
         path: 'statis',

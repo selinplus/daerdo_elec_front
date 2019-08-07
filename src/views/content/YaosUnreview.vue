@@ -93,7 +93,7 @@ export default {
     timeout: 3000,
     text: "",
     dialog: null,
-    img: null
+    img: ''
   }),
   mounted() {
     this.$axios.get("/api/v1/yaoshi/yaosunrev").then(res => {

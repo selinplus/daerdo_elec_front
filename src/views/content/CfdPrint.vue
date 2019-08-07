@@ -1,10 +1,10 @@
 <template>
   <v-container id="create">
     <div class="text-xs-center">
-      <v-dialog v-model="dialog" width="500">
+      <v-dialog v-model="dialog" max-width="650">
         <v-card>
           <v-card-title class="headline amber lighten-2" primary-title>处方單</v-card-title>
-          <v-img id="myImg" contain :src="require('src')" aspect-ratio = "1"></v-img>
+          <v-img id="myImg" contain :src="src"></v-img>
           <v-divider></v-divider>
 
           <v-card-actions>
@@ -77,7 +77,7 @@ export default {
     color: "orange",
     timeout: 3000,
     text: "",   
-    src: null,    
+    src: '',    
     pagination: {
       sortBy: "ID"
     },
@@ -88,16 +88,16 @@ export default {
         align: "left",
         value: "id"
       },
-      { text: "药店名称", value: "mc" },
+      { text: "药店名称", value: "mendian_mc" },
       { text: "开具时间", value: "cfkjsj" },
-      { text: "病人姓名", value: "name" },
+      { text: "病人姓名", value: "patient_name" },
       { text: "医师", value: "yishi_name" },
       { text: "病症描述", value: "bzms" },
     ],
-    desserts: []
+    desserts: [],
   }),
   mounted() {
-    this.$axios.get("/api/v1/prescription/cfuriysmt").then(res => {
+    this.$axios.get("/api/v1/presuribymonth").then(res => {
       if (res.data.data) this.desserts = res.data.data;
     });
   },

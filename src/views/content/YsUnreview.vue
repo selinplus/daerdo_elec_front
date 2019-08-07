@@ -92,7 +92,7 @@ export default {
     mode: "",
     timeout: 3000,
     text: "",
-    img: null,
+    img: '',
     dialog: null
   }),
   mounted() {

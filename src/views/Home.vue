@@ -104,7 +104,7 @@ export default {
       { icon: "group_add", text: "增加药品", path: "/home/medicine" },
       { divider: true },
       { heading: "辅助功能" },
-      { icon: "search", text: "查询", path: "/home/query" },
+      { icon: "search", text: "处方單", path: "/home/cfd" },
       { divider: true },
       { icon: "archive", text: "统计", path: "/home/statis" },
       { divider: true },
