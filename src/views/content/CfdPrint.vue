@@ -52,9 +52,9 @@
             <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
           </td>
           <td>{{ props.item.ID }}</td>
-          <td class="text-xs-right">{{ props.item.mc }}</td>
+          <td class="text-xs-right">{{ props.item.mendian_name }}</td>
           <td class="text-xs-right">{{ props.item.cfkjsj }}</td>
-          <td class="text-xs-right">{{ props.item.name }}</td>
+          <td class="text-xs-right">{{ props.item.patient_name }}</td>
           <td class="text-xs-right">{{ props.item.yishi_name }}</td>
           <td class="text-xs-right">{{ props.item.bzms }}</td>
           <td class=""><v-btn @click="show(props.item.cfduri)"><v-icon small>print</v-icon></v-btn></td>
@@ -88,7 +88,7 @@ export default {
         align: "left",
         value: "id"
       },
-      { text: "药店名称", value: "mendian_mc" },
+      { text: "药店名称", value: "mendian_name" },
       { text: "开具时间", value: "cfkjsj" },
       { text: "病人姓名", value: "patient_name" },
       { text: "医师", value: "yishi_name" },
