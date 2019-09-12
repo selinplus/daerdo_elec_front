@@ -6,7 +6,7 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="amber">
-                <v-toolbar-title>电子处方管理端</v-toolbar-title>
+                <v-toolbar-title>山东康源电子处方管理端</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">

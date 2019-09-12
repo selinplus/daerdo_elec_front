@@ -10,6 +10,7 @@ import YaosUnreview from './views/content/YaosUnreview.vue'
 import AddMedicine from './views/content/AddMedicine.vue'
 import CfdPrint from './views/content/CfdPrint.vue'
 import Statis from './views/content/Statis.vue'
+import MendianMgr from './views/content/MendianMgr.vue'
 
 import store from './store'
 Vue.use(Router)
@@ -63,6 +64,11 @@ let constRouter = [
         path: 'cfd',
         name: '处方單',
         component: CfdPrint,
+      },
+      {
+        path: 'mendian',
+        name: '药店信息',
+        component: MendianMgr,
       },
       {
         path: 'statis',

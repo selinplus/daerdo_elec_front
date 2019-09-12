@@ -1,15 +1,17 @@
 <template>
   <v-container id="create">
     <div class="text-xs-center">
-      <v-dialog v-model="dialog" max-width="650">
+      <v-dialog v-model="dialog" max-width="400">
         <v-card>
-          <v-card-title class="headline amber lighten-2" primary-title>处方單</v-card-title>
-          <v-img id="myImg" contain :src="src"></v-img>
+          <v-card-title class="headline amber lighten-2" primary-title>处方单</v-card-title>
+          <div id="myImg">
+             <v-img  max-width="400" max-height="600" :src="src"></v-img>
+          </div>
           <v-divider></v-divider>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="orange" v-print="'#myImg'">打印</v-btn>
+            <v-btn color="orange" @click="prt">打印</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -68,6 +70,7 @@
   </v-container>
 </template>
 <script>
+import printJs from 'print-js'
 export default {
   data: () => ({
     condition: null,
@@ -118,6 +121,9 @@ export default {
     show(uri) {
       this.src = uri
       this.dialog = !this.dialog
+    },
+    prt(){
+      printJs(this.src,'image')
     }
   }
 };
