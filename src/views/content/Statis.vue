@@ -12,7 +12,7 @@
         <v-flex xs12 sm6 md4 lg3>
           <v-card>
             <v-card-title>
-              <h4 class="orange--text">{{ props.item.mendian_mc }}</h4>
+              <h4 class="green--text">{{ props.item.mendian_mc }}</h4>
             </v-card-title>
             <v-divider></v-divider>
             <v-list dense>

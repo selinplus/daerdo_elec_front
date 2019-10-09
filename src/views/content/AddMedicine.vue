@@ -2,10 +2,10 @@
   <v-container id="create">
     <v-layout row flex>
       <v-flex xs8 sm8 md8 lg8>
-        <v-text-field label="输入拼音查询" outlined color="orange" clearable v-model="condition"></v-text-field>
+        <v-text-field label="输入拼音/汉字查询" outlined  clearable v-model="condition"></v-text-field>
       </v-flex>
       <v-flex xs2 sm2 md2 lg2>
-        <v-btn flat icon color="deep-orange" @click="query">
+        <v-btn flat icon color="deep-blue" @click="query">
           <v-icon>search</v-icon>
         </v-btn>
       </v-flex>
@@ -31,7 +31,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="orange" @click="save">保存</v-btn>
+            <v-btn @click="save">保存</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -118,7 +118,7 @@ export default {
     fab: false,
     dialog: false,
     snackbar: false,
-    color: "orange",
+    color: "primary",
     timeout: 3000,
     text: "",
     mc: null,

@@ -2,13 +2,12 @@
   <v-container>
     <v-layout row wrap fluid v-if="items.length>0">
       <template v-for="(item, i) in items">
-        <v-card :key="i" class="mx-auto" color="amber darken-2" width="300">
+        <v-card :key="i" class="mx-auto" color="blue darken-2" width="300">
           <v-card-title>
-            <v-icon large left>home</v-icon>
-            <span class="title font-weight-bold text--olive">{{item.zydw}}</span>
+            <span class="subtitle white--text">{{item.zydw}}</span>
           </v-card-title>
 
-          <v-card-text class="headline" style="height:100px;">"{{item.jianjie}}"</v-card-text>
+          <v-card-text class="headline white--text" style="height:100px;">"{{item.jianjie}}"</v-card-text>
           <v-layout>
             <v-flex xs6>
               <v-img :src="item.zyz_uri" height="130px" contain @click="show(item.zyz_uri)"></v-img>
@@ -24,7 +23,7 @@
               </v-list-tile-avatar>
 
               <v-list-tile-content>
-                <v-list-tile-title class="text--orange--darken-4">{{item.name}}</v-list-tile-title>
+                <v-list-tile-title class="text--grey--darken-4">{{item.name}}</v-list-tile-title>
               </v-list-tile-content>
 
               <v-layout v-show="!item.review" align-center justify-end>

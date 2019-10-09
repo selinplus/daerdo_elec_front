@@ -1,7 +1,7 @@
 <template>
   <v-container id="keep">
-    <v-navigation-drawer v-model="drawer" app fixed clipped class="amber">
-      <v-list dense class="amber">
+    <v-navigation-drawer v-model="drawer" app fixed clipped class="blue">
+      <v-list dense class="blue">
         <template v-for="(item, i) in items">
           <v-layout v-if="item.heading" :key="i" row align-center>
             <v-flex xs6>
@@ -25,13 +25,13 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="amber" app absolute clipped-left>
+    <v-toolbar color="blue" app absolute clipped-left>
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
-      <span class="title ml-3 mr-5">
+      <span class="title ml-3 mr-5 white--text">
         Manager&nbsp;
-        <span class="font-weight-light">Keeper</span>
+        <span class="font-weight-light white--text">Keeper</span>
       </span>
-      <v-text-field solo-inverted flat hide-details label="Search" prepend-inner-icon="search"></v-text-field>
+      
       <v-spacer></v-spacer>
       <template v-if="$vuetify.breakpoint.smAndUp">
         <v-btn icon>

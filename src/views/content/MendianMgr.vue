@@ -3,7 +3,7 @@
     <div class="text-xs-center">
       <v-dialog v-model="dialog" max-width="400">
         <v-card>
-          <v-card-title class="headline amber lighten-2" primary-title>药店信息</v-card-title>
+          <v-card-title class="headline lighten-2" primary-title>药店信息</v-card-title>
          <v-layout row wrap>
             <v-flex xs12 sm9 md9>
                 <v-text-field
@@ -40,7 +40,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="orange" @click="save"><v-icon small>save</v-icon></v-btn>
+            <v-btn  @click="save"><v-icon small>save</v-icon></v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -106,7 +106,7 @@ export default {
     fab: false,
     dialog: false,
     snackbar: false,
-    color: "orange",
+    color: "black",
     timeout: 3000,
     text: "",   
     src: '',

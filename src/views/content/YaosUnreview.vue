@@ -2,10 +2,10 @@
   <v-container>
     <v-layout row wrap fluid v-if="items.length>0">
       <template v-for="(item, i) in items">
-        <v-card :key="i" class="mx-auto" color="amber darken-2" width="300">
+        <v-card :key="i" class="mx-auto" color="blue darken-2" width="300">
           <v-card-title>
             <v-icon large left>home</v-icon>
-            <span class="title font-weight-bold text--olive">{{item.zydw}}</span>
+            <span class="title font-weight-bold text--blue">{{item.zydw}}</span>
           </v-card-title>
 
           <v-card-text class="headline" style="height:100px;">"{{item.jianjie}}"</v-card-text>
@@ -24,11 +24,11 @@
               </v-list-tile-avatar>
 
               <v-list-tile-content>
-                <v-list-tile-title class="text--orange--darken-4">{{item.name}}</v-list-tile-title>
+                <v-list-tile-title class="text--blue--darken-4">{{item.name}}</v-list-tile-title>
               </v-list-tile-content>
 
               <v-layout v-show="!item.review" align-center justify-end>
-                <v-btn flat icon color="green-darken">
+                <v-btn flat icon color="blue-darken">
                   <v-icon @click="reveal(item.ID)">thumb_up</v-icon>
                 </v-btn>
               </v-layout>
@@ -66,7 +66,7 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="orange" @click="dialog=!dialog">关闭</v-btn>
+            <v-btn color="blue" @click="dialog=!dialog">关闭</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -88,7 +88,7 @@ export default {
   data: () => ({
     items: [],
     snackbar: false,
-    color: "orange",
+    color: "black",
     mode: "",
     timeout: 3000,
     text: "",

@@ -5,13 +5,13 @@
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
-              <v-toolbar dark color="amber">
-                <v-toolbar-title>山东康源电子处方管理端</v-toolbar-title>
+              <v-toolbar class="primary">
+                <v-toolbar-title class="white--text">山东康源电子处方管理端</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-btn :href="source" icon large target="_blank" v-on="on">
-                      <v-icon large>code</v-icon>
+                      <v-icon v-text="$vuetify.icons.shunshizhen" large />
                     </v-btn>
                   </template>
                   <span>Source</span>
@@ -38,7 +38,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="amber" @click="doLogin">登录</v-btn>
+                <v-btn @click="doLogin">登录</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>

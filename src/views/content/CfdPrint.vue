@@ -3,35 +3,43 @@
     <div class="text-xs-center">
       <v-dialog v-model="dialog" max-width="400">
         <v-card>
-          <v-card-title class="headline amber lighten-2" primary-title>处方单</v-card-title>
+          <v-card-title class="headline lighten-2" primary-title>处方单</v-card-title>
           <div id="myImg">
-             <v-img  max-width="400" max-height="600" :src="src"></v-img>
+             <v-img aspect-ratio max-width="400" max-height="700" :src="src"></v-img>
           </div>
           <v-divider></v-divider>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="orange" @click="prt">打印</v-btn>
+            <v-btn @click="prt">打印</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </div>
-
+    <v-flex>
+      <v-card>
+        <v-card-actions class="blue">
+          <v-select v-model="mendian" :items="items" label="选择门店"></v-select>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
+    <template>
+      <v-progress-linear :indeterminate="true" v-if="progress"></v-progress-linear>
+    </template>
     <v-data-table
       v-model="selected"
       :headers="headers"
       :items="desserts"
       :pagination.sync="pagination"
       item-key="ID"
-      class="elevation-1"
     >
       <template v-slot:headers="props">
-        <tr>
+        <tr class="blue">
           <th>
             <v-checkbox
               :input-value="props.all"
-              :indeterminate="props.indeterminate"
-              orange
+              :indeterminate="props.indeterminate"              
               hide-details
               @click.stop="toggleAll"
             ></v-checkbox>
@@ -40,8 +48,8 @@
             v-for="header in props.headers"
             :key="header.text"
             :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-            @click="changeSort(header.value)"
-            color="orange"
+            class="white--text"
+            @click="changeSort(header.value)"            
           >
             <v-icon small>arrow_upward</v-icon>
             {{ header.text }}
@@ -73,17 +81,20 @@
 import printJs from 'print-js'
 export default {
   data: () => ({
+    progress: true,
     condition: null,
     fab: false,
     dialog: false,
     snackbar: false,
-    color: "orange",
+    color: "black",
     timeout: 3000,
     text: "",   
     src: '',    
     pagination: {
       sortBy: "ID"
     },
+    mendian: '',
+    items: [],
     selected: [],
     headers: [
       {
@@ -96,13 +107,30 @@ export default {
       { text: "病人姓名", value: "patient_name" },
       { text: "医师", value: "yishi_name" },
       { text: "病症描述", value: "bzms" },
+      { text: "操作", value: ""}
     ],
     desserts: [],
   }),
   mounted() {
-    this.$axios.get("/api/v1/presuribymonth").then(res => {
-      if (res.data.data) this.desserts = res.data.data;
+    // this.$axios.get("/api/v1/presuribymonth").then(res => {
+    //   if (res.data.data) this.desserts = res.data.data;
+    //   this.progress = false;
+    // });
+    this.$axios.get("/api/v1/mendian/mclist").then(res => {
+      if (res.data.data) this.items = res.data.data;
+      this.progress = false;
     });
+  },
+  watch: {
+    mendian: function (val) {
+      if (val !=''){
+        this.progress = true
+        this.$axios.get("/api/v1/presuribymonth?mc=" + mendian).then(res => {
+          if (res.data.data) this.desserts = res.data.data;
+          this.progress = false;
+        });
+      }
+    },
   },
   methods: {
     toggleAll() {
@@ -121,6 +149,9 @@ export default {
     show(uri) {
       this.src = uri
       this.dialog = !this.dialog
+    },
+    filterMendian(){
+
     },
     prt(){
       printJs(this.src,'image')
