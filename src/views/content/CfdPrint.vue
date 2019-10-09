@@ -125,8 +125,10 @@ export default {
     mendian: function (val) {
       if (val !=''){
         this.progress = true
-        this.$axios.get("/api/v1/presuribymonth?mc=" + mendian).then(res => {
+        this.$axios.get("/api/v1/presuribymonth?mc=" + this.mendian).then(res => {
           if (res.data.data) this.desserts = res.data.data;
+          this.progress = false;
+        }).catch(except =>{
           this.progress = false;
         });
       }

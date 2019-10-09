@@ -29,7 +29,7 @@
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
       <span class="title ml-3 mr-5 white--text">
         Manager&nbsp;
-        <span class="font-weight-light white--text">Keeper</span>
+        <span class="font-weight-light white--text">{{mc}}</span>
       </span>
       
       <v-spacer></v-spacer>
@@ -81,6 +81,7 @@
 import { mapMutations } from "vuex";
 export default {
   data: () => ({
+    mc:'',
     dialog: null,
     drawer: null,
     snackbar: false,
@@ -116,10 +117,14 @@ export default {
   props: {
     source: String
   },
+  mounted(){
+    this.mc = this.getMc()
+  },
   methods: {
     ...mapMutations({
       addToken: "setToken",
-      getUsername: "getUsername"
+      getUsername: "getUsername",
+      getMc: "getMc"
     }),
     logout() {
       this.addToken("");

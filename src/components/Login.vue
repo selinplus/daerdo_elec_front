@@ -6,16 +6,8 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar class="primary">
-                <v-toolbar-title class="white--text">山东康源电子处方管理端</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn :href="source" icon large target="_blank" v-on="on">
-                      <v-icon v-text="$vuetify.icons.shunshizhen" large />
-                    </v-btn>
-                  </template>
-                  <span>Source</span>
-                </v-tooltip>
+                <v-toolbar-title class="white--text">{{mc}}电子处方管理端</v-toolbar-title>
+                <v-spacer></v-spacer>                
               </v-toolbar>
               <v-card-text>
                 <v-form>
@@ -69,17 +61,25 @@ export default {
     color: "",
     mode: "",
     timeout: 3000,
-    text: ""
+    text: "",
+    mc: '',
   }),
 
   props: {
     source: String
   },
-
+  mounted(){
+    self = this;
+     this.$axios.get("/yaodian").then(res => {
+          if (res.data.data) self.mc = res.data.data.mc;
+            self.addMc(self.mc)
+        })
+  },
   methods: {
     ...mapMutations({
       addToken: "setToken",
-      addUsername: "setUsername"
+      addUsername: "setUsername",
+      addMc: "setMc"
     }),
     doLogin() {
       if (this.username && this.password) {
