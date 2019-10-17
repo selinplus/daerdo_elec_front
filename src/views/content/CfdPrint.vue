@@ -5,7 +5,7 @@
         <v-card>
           <v-card-title class="headline lighten-2" primary-title>处方单</v-card-title>
           <div id="myImg">
-             <v-img aspect-ratio max-width="400" max-height="700" :src="src"></v-img>
+             <v-img aspect-ratio max-width="400" max-height="600" :src="src"></v-img>
           </div>
           <v-divider></v-divider>
 
@@ -128,7 +128,7 @@ export default {
         this.$axios.get("/api/v1/presuribymonth?mc=" + this.mendian).then(res => {
           if (res.data.data) this.desserts = res.data.data;
           this.progress = false;
-        }).catch(except =>{
+        }).catch(() =>{
           this.progress = false;
         });
       }
@@ -156,7 +156,7 @@ export default {
 
     },
     prt(){
-      printJs(this.src,'image')
+      printJs({printable: this.src, type:'image', imageStyle: 'margin-left:100px;width:75%;'})
     }
   }
 };

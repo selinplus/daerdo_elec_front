@@ -69,7 +69,7 @@ export default {
     source: String
   },
   mounted(){
-    self = this;
+    var self = this;
      this.$axios.get("/yaodian").then(res => {
           if (res.data.data) self.mc = res.data.data.mc;
             self.addMc(self.mc)
