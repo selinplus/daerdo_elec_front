@@ -156,7 +156,7 @@ export default {
 
     },
     prt(){
-      printJs({printable: this.src, type:'image', imageStyle: 'margin-left:100px;width:75%;'})
+      printJs({printable: this.src, type:'image', imageStyle: 'margin-top:30px;height:600px;'})
     }
   }
 };
