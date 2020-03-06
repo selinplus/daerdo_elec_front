@@ -11,7 +11,7 @@ import router from '../router'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {
-  baseURL: process.env.baseURL || process.env.apiUrl || "https://ytkeno.top:4447",
+  //baseURL: process.env.baseURL || process.env.apiUrl || "https://ytkeno.top:4451",
   //baseURL: process.env.baseURL || process.env.apiUrl,
   // timeout: 60 * 1000, // Timeout
   withCredentials: false, // Check cross-site Access-Control

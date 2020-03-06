@@ -4,43 +4,33 @@
       <v-dialog v-model="dialog" max-width="400">
         <v-card>
           <v-card-title class="headline lighten-2" primary-title>药店信息</v-card-title>
-         <v-layout row wrap>
+          <v-layout row wrap>
             <v-flex xs12 sm9 md9>
-                <v-text-field
-                    label="名称" v-model="md.mc"
-                ></v-text-field>
+              <v-text-field label="名称" v-model="md.mc"></v-text-field>
             </v-flex>
             <v-flex xs12 sm9 md9>
-                <v-text-field
-                    label="负责人" v-model="md.fzr"
-                ></v-text-field>
+              <v-text-field label="负责人" v-model="md.fzr"></v-text-field>
             </v-flex>
             <v-flex xs12 sm9 md9>
-                <v-text-field
-                    label="电话" v-model="md.dianhua"
-                ></v-text-field>
+              <v-text-field label="电话" v-model="md.dianhua"></v-text-field>
             </v-flex>
             <v-flex xs12 sm9 md9>
-                <v-text-field
-                    label="帐号" v-model="md.username"
-                ></v-text-field>
+              <v-text-field label="帐号" v-model="md.username"></v-text-field>
             </v-flex>
             <v-flex xs12 sm9 md9>
-                <v-text-field
-                    label="密码" v-model="md.password"
-                ></v-text-field>
+              <v-text-field label="密码" v-model="md.password"></v-text-field>
             </v-flex>
             <v-flex xs12 sm9 md9>
-                <v-text-field
-                    label="版本" v-model="md.version"
-                ></v-text-field>
+              <v-text-field label="版本" v-model="md.version"></v-text-field>
             </v-flex>
-         </v-layout>
+          </v-layout>
           <v-divider></v-divider>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn  @click="save"><v-icon small>save</v-icon></v-btn>
+            <v-btn @click="save">
+              <v-icon small>save</v-icon>
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -89,11 +79,20 @@
           <td class="text-xs-right">{{ props.item.username }}</td>
           <td class="text-xs-right">{{ props.item.password }}</td>
           <td class="text-xs-right">{{ props.item.version }}</td>
-          <td class=""><v-btn @click="show(props.item.ID)"><v-icon small>edit</v-icon></v-btn></td>
-          <td class=""><v-btn @click="expired(props.item.ID)"><v-icon small>disable</v-icon></v-btn></td>
+          <td class>
+            <v-btn @click="show(props.item.ID)">
+              <v-icon small>edit</v-icon>
+            </v-btn>
+          </td>
+          <td class>
+            <v-btn @click="expired(props.item.ID,props.item.yxbz)">
+              <v-icon v-if="props.item.yxbz==0" small>add_circle</v-icon>
+              <v-icon v-else small>remove_circle</v-icon>
+            </v-btn>
+          </td>
         </tr>
       </template>
-    </v-data-table>    
+    </v-data-table>
     <v-snackbar v-model="snackbar" :color="color" :timeout="timeout">
       {{ text }}
       <v-btn dark flat @click="snackbar = false">Close</v-btn>
@@ -109,9 +108,10 @@ export default {
     snackbar: false,
     color: "black",
     timeout: 3000,
-    text: "",   
-    src: '',
-    md: {},    
+    item: null,
+    text: "",
+    src: "",
+    md: {},
     pagination: {
       sortBy: "ID"
     },
@@ -128,8 +128,10 @@ export default {
       { text: "帐号", value: "username" },
       { text: "密码", value: "password" },
       { text: "版本", value: "version" },
+      { text: "操作", value: "ID" },
+      { text: "有效", value: "yxbz" }
     ],
-    desserts: [],
+    desserts: []
   }),
   mounted() {
     this.$axios.get("/api/v1/yaodian").then(res => {
@@ -152,52 +154,61 @@ export default {
     },
     show(idd) {
       this.desserts.forEach(i => {
-        if (i.ID === idd){
+        if (i.ID === idd) {
           //eslint-disable-next-line
-          console.log("ID="+idd)
-            this.md = i
+          console.log("ID=" + idd);
+          this.md = i;
         }
       });
-      this.dialog = !this.dialog
+      this.dialog = !this.dialog;
     },
-    expired(){
+    expired(idd, yxbz) {
+      if (yxbz === 1){
+        yxbz = 0
+      }else{
+        yxbz = 1
+      }
       this.$axios
-          .post("api/v1/mendian/yxbz", {
-            id: this.md.ID,
-            yxbz: 1,
-          })
-          .then(res => {
-            if (res.data.code == 200) {
-              this.text = "修改" + this.md.mc + "成功";
-              this.snackbar = true;
-              this.dialog = !this.dialog
-            } else {
-              this.text = "修改" + this.md.mc + "失败";
-              this.snackbar = true;
-            }
-          });
+        .post("api/v1/mendian/yxbz", {
+          id: idd,
+          yxbz: yxbz
+        })
+        .then(res => {
+          if (res.data.code == 200) {
+            this.text = "修改有效状态成功";
+            this.snackbar = true;
+            this.desserts.forEach(i => {
+              if (i.ID === idd) {
+                i.yxbz = yxbz;
+              }
+            });
+          } else {
+            this.text = "修改有效状态失败";
+            this.snackbar = true;
+          }
+        });
     },
-    save(){
+    save() {
       this.$axios
-          .post("api/v1/upd/mdinfo", {
-            id: this.md.ID,
-            mc: this.md.mc,
-            fzr: this.md.fzr,
-            dianhua: this.md.dianhua,
-            username: this.md.username,
-            password: this.md.password,
-            version: this.md.version
-          })
-          .then(res => {
-            if (res.data.code == 200) {
-              this.text = "修改" + this.md.mc + "成功";
-              this.snackbar = true;
-              this.dialog = !this.dialog
-            } else {
-              this.text = "修改" + this.md.mc + "失败";
-              this.snackbar = true;
-            }
-          });
+        .post("api/v1/upd/mdinfo", {
+          id: this.md.ID,
+          mc: this.md.mc,
+          fzr: this.md.fzr,
+          dianhua: this.md.dianhua,
+          username: this.md.username,
+          password: this.md.password,
+          version: this.md.version
+        })
+        .then(res => {
+          if (res.data.code == 200) {
+            this.text = "修改" + this.md.mc + "成功";
+            this.snackbar = true;
+            this.dialog = !this.dialog;
+          } else {
+            this.text = "修改" + this.md.mc + "失败";
+            this.snackbar = true;
+          }
+        });
     }
   }
 };

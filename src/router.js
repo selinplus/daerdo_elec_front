@@ -11,6 +11,7 @@ import AddMedicine from './views/content/AddMedicine.vue'
 import CfdPrint from './views/content/CfdPrint.vue'
 import Statis from './views/content/Statis.vue'
 import MendianMgr from './views/content/MendianMgr.vue'
+import Setting from './views/content/Setting.vue'
 
 import store from './store'
 Vue.use(Router)
@@ -78,7 +79,7 @@ let constRouter = [
       {
         path: 'settings',
         name: '设置',
-        component: Welcome,
+        component: Setting,
       },
     ],
   }

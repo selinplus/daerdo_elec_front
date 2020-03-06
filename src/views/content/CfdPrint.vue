@@ -5,7 +5,7 @@
         <v-card>
           <v-card-title class="headline lighten-2" primary-title>处方单</v-card-title>
           <div id="myImg">
-             <v-img aspect-ratio max-width="400" max-height="600" :src="src"></v-img>
+            <v-img aspect-ratio max-width="400" max-height="600" :src="src"></v-img>
           </div>
           <v-divider></v-divider>
 
@@ -16,30 +16,27 @@
         </v-card>
       </v-dialog>
     </div>
-    <v-flex>
-      <v-card>
-        <v-card-actions class="blue">
-          <v-row>
-            <v-col>
-              <v-select v-model="mendian" :items="items" label="选择门店"></v-select>
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-              <v-text-field label="开始日期" v-model="begtime" placeholder="2020-03-01"></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-              <v-text-field label="结束日期" v-model="endtime" placeholder="2020-03-15"></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-              <v-btn class="ma-2" tile color="indigo" dark @click="querycf">查询</v-btn>
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-              <v-btn class="ma-2" tile color="indigo" :disabled="desserts" dark @click="downcf">下载</v-btn>
-            </v-col>
-          </v-row>
-          <v-spacer></v-spacer>
-        </v-card-actions>
+    <v-container fluid>
+      <v-card align-center justify-center>
+        <v-select v-model="mendian" :items="items" label="选择门店"></v-select>
+
+        <v-text-field label="开始日期" v-model="begtime" placeholder="2020-03-01"></v-text-field>
+
+        <v-text-field label="结束日期" v-model="endtime" placeholder="2020-03-15"></v-text-field>
+
+        <v-btn class="ma-2" tile color="indigo" dark @click="querycf">查询</v-btn>
+
+        <v-btn
+          class="ma-2"
+          tile
+          color="indigo"
+          :disabled="!desserts.length>0"
+          dark
+          @click="downcf"
+        >下载</v-btn>
       </v-card>
-    </v-flex>
+      <v-spacer></v-spacer>
+    </v-container>
     <template>
       <v-progress-linear :indeterminate="true" v-if="progress"></v-progress-linear>
     </template>
@@ -55,7 +52,7 @@
           <th>
             <v-checkbox
               :input-value="props.all"
-              :indeterminate="props.indeterminate"              
+              :indeterminate="props.indeterminate"
               hide-details
               @click.stop="toggleAll"
             ></v-checkbox>
@@ -65,7 +62,7 @@
             :key="header.text"
             :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
             class="white--text"
-            @click="changeSort(header.value)"            
+            @click="changeSort(header.value)"
           >
             <v-icon small>arrow_upward</v-icon>
             {{ header.text }}
@@ -83,10 +80,14 @@
           <td class="text-xs-right">{{ props.item.patient_name }}</td>
           <td class="text-xs-right">{{ props.item.yishi_name }}</td>
           <td class="text-xs-right">{{ props.item.bzms }}</td>
-          <td class=""><v-btn @click="show(props.item.cfduri)"><v-icon small>print</v-icon></v-btn></td>
+          <td class>
+            <v-btn @click="show(props.item.cfduri)">
+              <v-icon small>print</v-icon>
+            </v-btn>
+          </td>
         </tr>
       </template>
-    </v-data-table>    
+    </v-data-table>
     <v-snackbar v-model="snackbar" :color="color" :timeout="timeout">
       {{ text }}
       <v-btn dark flat @click="snackbar = false">Close</v-btn>
@@ -94,7 +95,7 @@
   </v-container>
 </template>
 <script>
-import printJs from 'print-js'
+import printJs from "print-js";
 export default {
   data: () => ({
     progress: true,
@@ -107,11 +108,11 @@ export default {
     text: "",
     begtime: "",
     endtime: "",
-    src: '',    
+    src: "",
     pagination: {
       sortBy: "ID"
     },
-    mendian: '',
+    mendian: "",
     items: [],
     selected: [],
     headers: [
@@ -125,9 +126,9 @@ export default {
       { text: "病人姓名", value: "patient_name" },
       { text: "医师", value: "yishi_name" },
       { text: "病症描述", value: "bzms" },
-      { text: "操作", value: ""}
+      { text: "操作", value: "" }
     ],
-    desserts: [],
+    desserts: []
   }),
   mounted() {
     // this.$axios.get("/api/v1/presuribymonth").then(res => {
@@ -139,9 +140,7 @@ export default {
       this.progress = false;
     });
   },
-  watch: {
-    
-  },
+  watch: {},
   methods: {
     toggleAll() {
       if (this.selected.length) this.selected = [];
@@ -157,18 +156,28 @@ export default {
       }
     },
     show(uri) {
-      this.src = uri
-      this.dialog = !this.dialog
+      this.src = uri;
+      this.dialog = !this.dialog;
     },
-    querycf: function (val) {
-      if (val !=''){
-        this.progress = true
-        this.$axios.get("/api/v1/presuribymonth?mc=" + this.mendian).then(res => {
-          if (res.data.data) this.desserts = res.data.data;
-          this.progress = false;
-        }).catch(() =>{
-          this.progress = false;
-        });
+    querycf: function(val) {
+      if (val != "") {
+        this.progress = true;
+        this.$axios
+          .get(
+            "/api/v1/presuribymonth?mc=" +
+              this.mendian +
+              "&begtime=" +
+              this.begtime +
+              "&endtime=" +
+              this.endtime
+          )
+          .then(res => {
+            if (res.data.data) this.desserts = res.data.data;
+            this.progress = false;
+          })
+          .catch(() => {
+            this.progress = false;
+          });
       }
     },
     downcf: function() {
@@ -178,27 +187,29 @@ export default {
         .get(
           "/api/v1/downloadcf?mc=" +
             this.mendian +
-            "begtime=" +
+            "&begtime=" +
             this.begtime +
-            "endtime=" +
+            "&endtime=" +
             this.endtime
         )
         .then(res => {
           if (res.data.data) {
-            var src =window.location.protocol+"//"+window.location.host+"/export/"+res.data.data;
-            var form = document.createElement("form");
-            form.action = src;
-            document.getElementsByTagName("body")[0].appendChild(form);
-            form.submit();
+            var src = window.location.protocol + "//" + window.location.host + "/export/" + res.data.data;
+            var iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = src;
+            document.getElementsByTagName("body")[0].appendChild(iframe);
           }
           this.progress = false;
         });
     },
-    filterMendian(){
-
-    },
-    prt(){
-      printJs({printable: this.src, type:'image', imageStyle: 'margin-top:30px;height:600px;'})
+    filterMendian() {},
+    prt() {
+      printJs({
+        printable: this.src,
+        type: "image",
+        imageStyle: "margin-top:30px;height:600px;"
+      });
     }
   }
 };
