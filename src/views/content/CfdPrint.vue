@@ -19,7 +19,23 @@
     <v-flex>
       <v-card>
         <v-card-actions class="blue">
-          <v-select v-model="mendian" :items="items" label="选择门店"></v-select>
+          <v-row>
+            <v-col>
+              <v-select v-model="mendian" :items="items" label="选择门店"></v-select>
+            </v-col>
+            <v-col cols="12" sm="6" md="3">
+              <v-text-field label="开始日期" v-model="begtime" placeholder="2020-03-01"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6" md="3">
+              <v-text-field label="结束日期" v-model="endtime" placeholder="2020-03-15"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6" md="3">
+              <v-btn class="ma-2" tile color="indigo" dark @click="querycf">查询</v-btn>
+            </v-col>
+            <v-col cols="12" sm="6" md="3">
+              <v-btn class="ma-2" tile color="indigo" :disabled="desserts" dark @click="downcf">下载</v-btn>
+            </v-col>
+          </v-row>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -88,7 +104,9 @@ export default {
     snackbar: false,
     color: "black",
     timeout: 3000,
-    text: "",   
+    text: "",
+    begtime: "",
+    endtime: "",
     src: '',    
     pagination: {
       sortBy: "ID"
@@ -122,17 +140,7 @@ export default {
     });
   },
   watch: {
-    mendian: function (val) {
-      if (val !=''){
-        this.progress = true
-        this.$axios.get("/api/v1/presuribymonth?mc=" + this.mendian).then(res => {
-          if (res.data.data) this.desserts = res.data.data;
-          this.progress = false;
-        }).catch(() =>{
-          this.progress = false;
-        });
-      }
-    },
+    
   },
   methods: {
     toggleAll() {
@@ -151,6 +159,40 @@ export default {
     show(uri) {
       this.src = uri
       this.dialog = !this.dialog
+    },
+    querycf: function (val) {
+      if (val !=''){
+        this.progress = true
+        this.$axios.get("/api/v1/presuribymonth?mc=" + this.mendian).then(res => {
+          if (res.data.data) this.desserts = res.data.data;
+          this.progress = false;
+        }).catch(() =>{
+          this.progress = false;
+        });
+      }
+    },
+    downcf: function() {
+      this.text = "准备数据...";
+      this.progress = true;
+      this.$axios
+        .get(
+          "/api/v1/downloadcf?mc=" +
+            this.mendian +
+            "begtime=" +
+            this.begtime +
+            "endtime=" +
+            this.endtime
+        )
+        .then(res => {
+          if (res.data.data) {
+            var src =window.location.protocol+"//"+window.location.host+"/export/"+res.data.data;
+            var form = document.createElement("form");
+            form.action = src;
+            document.getElementsByTagName("body")[0].appendChild(form);
+            form.submit();
+          }
+          this.progress = false;
+        });
     },
     filterMendian(){
 

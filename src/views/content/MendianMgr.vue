@@ -90,6 +90,7 @@
           <td class="text-xs-right">{{ props.item.password }}</td>
           <td class="text-xs-right">{{ props.item.version }}</td>
           <td class=""><v-btn @click="show(props.item.ID)"><v-icon small>edit</v-icon></v-btn></td>
+          <td class=""><v-btn @click="expired(props.item.ID)"><v-icon small>disable</v-icon></v-btn></td>
         </tr>
       </template>
     </v-data-table>    
@@ -158,6 +159,23 @@ export default {
         }
       });
       this.dialog = !this.dialog
+    },
+    expired(){
+      this.$axios
+          .post("api/v1/mendian/yxbz", {
+            id: this.md.ID,
+            yxbz: 1,
+          })
+          .then(res => {
+            if (res.data.code == 200) {
+              this.text = "修改" + this.md.mc + "成功";
+              this.snackbar = true;
+              this.dialog = !this.dialog
+            } else {
+              this.text = "修改" + this.md.mc + "失败";
+              this.snackbar = true;
+            }
+          });
     },
     save(){
       this.$axios
