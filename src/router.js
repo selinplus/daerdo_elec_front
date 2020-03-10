@@ -12,7 +12,7 @@ import CfdPrint from './views/content/CfdPrint.vue'
 import Statis from './views/content/Statis.vue'
 import MendianMgr from './views/content/MendianMgr.vue'
 import Setting from './views/content/Setting.vue'
-
+import AddMidMedicine from './views/content/AddMidMedicine.vue'
 import store from './store'
 Vue.use(Router)
 
@@ -60,6 +60,11 @@ let constRouter = [
         path: 'medicine',
         name: '增加药品',
         component: AddMedicine,
+      },
+      {
+        path: 'midmedicine',
+        name: '增加中药材',
+        component: AddMidMedicine,
       },
       {
         path: 'cfd',

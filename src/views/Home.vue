@@ -103,6 +103,7 @@ export default {
       { icon: "rate_review", text: "未审核药师", path: "/home/yaosunreview" },
       { icon: "verified_user", text: "已审核药师", path: "/home/yaosreview" },
       { icon: "group_add", text: "增加药品", path: "/home/medicine" },
+      { icon: "group_add", text: "增加中药材", path: "/home/midmedicine" },
       { divider: true },
       { heading: "辅助功能" },
       { icon: "search", text: "处方单", path: "/home/cfd" },
