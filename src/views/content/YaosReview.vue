@@ -1,41 +1,45 @@
 <template>
   <v-container>
     <v-layout row wrap fluid v-if="items.length>0">
-      <template v-for="(item, i) in items">
-        <v-card :key="i" class="mx-auto" color="blue darken-2" width="300">
-          <v-card-title>
-            <span class="subtitle white--text">{{item.zydw}}</span>
-          </v-card-title>
+      
+      <v-row dense>
+        <v-col
+          v-for="card in cards"
+          :key="card.title"
+          :cols="card.flex"
+        >
+          <v-card>
+            <v-img
+              :src="card.src"
+              class="white--text align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+              height="200px"
+            >
+              <v-card-title v-text="card.zydw"></v-card-title>
+            </v-img>
+            <v-card-text class="text--primary">
+              <div>{{card.jianjie}}</div>
 
-          <v-card-text class="headline white--text" style="height:100px;">"{{item.jianjie}}"</v-card-text>
-          <v-layout>
-            <v-flex xs6>
-              <v-img :src="item.zyz_uri" height="130px" contain @click="show(item.zyz_uri)"></v-img>
-            </v-flex>
-            <v-flex xs6>
-              <v-img :src="item.zgz_uri" height="130px" contain @click="show(item.zgz_uri)"></v-img>
-            </v-flex>
-          </v-layout>
-          <v-card-actions>
-            <v-list-tile class="grow">
-              <v-list-tile-avatar color="grey darken-3">
-                <v-img class="elevation-6" :src="item.avator_uri"></v-img>
-              </v-list-tile-avatar>
+              <div>Whitsunday Island, Whitsunday Islands</div>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
 
-              <v-list-tile-content>
-                <v-list-tile-title class="text--grey--darken-4">{{item.name}}</v-list-tile-title>
-              </v-list-tile-content>
+              <v-btn icon>
+                <v-icon>mdi-heart</v-icon>
+              </v-btn>
 
-              <v-layout v-show="!item.review" align-center justify-end>
-                <v-btn flat icon color="green-darken">
-                  <v-icon @click="reveal(item.ID)">thumb_up</v-icon>
-                </v-btn>
-              </v-layout>
-            </v-list-tile>
-          </v-card-actions>
-          <v-spacer color="white"></v-spacer>
-        </v-card>
-      </template>
+              <v-btn icon>
+                <v-icon>mdi-bookmark</v-icon>
+              </v-btn>
+
+              <v-btn icon>
+                <v-icon>mdi-share-variant</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-layout>
     <v-layout v-if="items.length==0">
       <v-flex xs12 sm6 offset-sm3>

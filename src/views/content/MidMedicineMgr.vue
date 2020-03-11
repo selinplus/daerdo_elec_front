@@ -6,7 +6,7 @@
       </v-flex>
       <v-flex xs2 sm2 md2 lg2>
         <v-btn flat icon color="deep-blue" :disabled="file==null" @click="uploadFile">
-          导入
+          <v-icon>search</v-icon>
         </v-btn>
       </v-flex>
       <v-flex xs2 sm2 md2 lg2>
@@ -29,17 +29,10 @@
     <div class="text-xs-center">
       <v-dialog v-model="dialog" width="500">
         <v-card>
-          <v-card-title class="headline amber lighten-2" primary-title>Med Add</v-card-title>
+          <v-card-title class="headline amber lighten-2" primary-title>增加中药</v-card-title>
           <v-card-text>
             <v-form ref="form" lazy-validation>
               <v-text-field v-model="mc" :counter="50" :rules="rules" label="名称" required></v-text-field>
-
-              <v-text-field v-model="style" :rules="rules" label="规格" required></v-text-field>
-
-              <v-text-field v-model="unit" :rules="rules" label="单位" required></v-text-field>
-
-              <v-text-field v-model="source" :rules="rules" label="产地" required></v-text-field>
-              <v-btn color="error" flat @click="reset">清空</v-btn>
             </v-form>
           </v-card-text>
           <v-divider></v-divider>
@@ -52,16 +45,10 @@
       </v-dialog>
       <v-dialog v-model="dialog1" width="500">
         <v-card>
-          <v-card-title class="headline amber lighten-2" primary-title>修改药品</v-card-title>
+          <v-card-title class="headline amber lighten-2" primary-title>修改中药</v-card-title>
           <v-card-text>
             <v-form ref="form" lazy-validation>
               <v-text-field v-model="med.mc" :counter="50" :rules="rules" label="名称" required></v-text-field>
-
-              <v-text-field v-model="med.style" :rules="rules" label="规格" required></v-text-field>
-
-              <v-text-field v-model="med.unit" :rules="rules" label="单位" required></v-text-field>
-
-              <v-text-field v-model="med.source" :rules="rules" label="产地" required></v-text-field>
             </v-form>
           </v-card-text>
           <v-divider></v-divider>
@@ -112,9 +99,6 @@
           </td>
           <td>{{ props.item.ID }}</td>
           <td class="text-xs-right">{{ props.item.mc }}</td>
-          <td class="text-xs-right">{{ props.item.style }}</td>
-          <td class="text-xs-right">{{ props.item.unit }}</td>
-          <td class="text-xs-right">{{ props.item.source }}</td>
         </tr>
       </template>
     </v-data-table>
@@ -159,12 +143,9 @@ export default {
     color: "primary",
     timeout: 3000,
     text: "",
-    file: null,
     med:{},
+    file:null,
     mc: null,
-    style: null,
-    unit: null,
-    source: null,
 
     rules: [
       v => !!v || "内容必须填写",
@@ -204,7 +185,7 @@ export default {
     },
     query() {
       if (this.condition.length) {
-        this.$axios.get("api/v1/medicine/py?py=" + this.condition).then(res => {
+        this.$axios.get("api/v1/materiamedica/py?py=" + this.condition).then(res => {
           if (res.data.data) this.desserts = res.data.data;
         });
       }
@@ -217,31 +198,32 @@ export default {
         console.log(this.file)
     },
     download(){
-      var src = window.location.protocol + "//" + window.location.host + "/export/medicine.xlsx";
+      var src = window.location.protocol + "//" + window.location.host + "/export/tcm.xlsx";
       var iframe = document.createElement("iframe");
       iframe.style.display = "none";
       iframe.src = src;
       document.getElementsByTagName("body")[0].appendChild(iframe);
     },
     save() {
-      if (this.mc && this.unit && this.style && this.source) {
+      if (this.mc) {
+        if (this.mc !== "") {
         this.$axios
-          .post("api/v1/medicine/addmd", {          
-            mc: this.mc,
-            style: this.style,
-            source: this.source,
-            unit: this.unit
-          })
+          .post("/api/v1/materiamedica/addmd", { mc: this.mc })
           .then(res => {
             if (res.data.code == 200) {
-              this.text = "添加" + this.mc + "成功";
+              this.text = "增加" + this.mc + "成功";
               this.snackbar = true;
-              this.$refs.form.reset();
+              this.mc = ""
             } else {
-              this.text = "添加" + this.mc + "失败";
+              this.text = "增加失败";
               this.snackbar = true;
             }
           });
+        } else {
+            this.text = "名称不能为空";
+            this.snackbar = true;
+            this.setMc(this.mc);
+        }
       }
     },
     edit(){//打开修改药品窗口
@@ -254,14 +236,11 @@ export default {
         }
     },
     editSave(){//修改药品
-      if (this.med.mc && this.med.unit && this.med.style && this.med.source) {
+      if (this.med.mc) {
         this.$axios
-          .post("api/v1/medicine/editmd", {
+          .post("api/v1/materiamedica/editmd", {
             id: this.med.id,
             mc: this.med.mc,
-            style: this.med.style,
-            source: this.med.source,
-            unit: this.med.unit
           })
           .then(res => {
             if (res.data.code == 200) {
@@ -282,7 +261,7 @@ export default {
        if (this.selected.length!==1){
           let sid = this.selected[0].id
            this.$axios
-          .post("api/v1/medicine/delmd", {
+          .post("api/v1/materiamedica/delmd", {
             id: sid,
           })
           .then(res => {

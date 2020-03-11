@@ -5,7 +5,7 @@
         <v-card :key="i" class="mx-auto" color="blue darken-2" width="300">
           <v-card-title>
             <v-icon large left>home</v-icon>
-            <span class="title font-weight-bold text--olive">{{item.zydw}}</span>
+            <span class="title font-weight-bold text--blue">{{item.zydw}}</span>
           </v-card-title>
 
           <v-card-text class="headline" style="height:100px;">"{{item.jianjie}}"</v-card-text>
@@ -17,7 +17,7 @@
               <v-img :src="item.zgz_uri" height="130px" contain @click="show(item.zgz_uri)"></v-img>
             </v-flex>
           </v-layout>
-          <v-card-actions>
+          <v-card-text class="text--primary">
             <v-list-tile class="grow">
               <v-list-tile-avatar color="grey darken-3">
                 <v-img class="elevation-6" :src="item.avator_uri"></v-img>
@@ -25,14 +25,22 @@
 
               <v-list-tile-content>
                 <v-list-tile-title class="text--blue--darken-4">{{item.name}}</v-list-tile-title>
+                <v-list-tile-title>账号:{{item.username}} 密码:{{item.password}}</v-list-tile-title>
               </v-list-tile-content>
-
-              <v-layout v-show="!item.review" align-center justify-end>
-                <v-btn flat icon color="green-darken">
-                  <v-icon @click="reveal(item.ID)">thumb_up</v-icon>
-                </v-btn>
-              </v-layout>
+              
             </v-list-tile>
+          </v-card-text>
+          <v-card-actions>
+             <v-spacer></v-spacer>
+              <v-btn text v-if="!item.review" @click="reveal(item.ID)">
+                审核
+              </v-btn>
+              <v-btn text @click="edit(item)">
+                修改
+              </v-btn>
+              <v-btn text @click="remove(item.ID)">
+                删除
+              </v-btn>
           </v-card-actions>
           <v-spacer color="white"></v-spacer>
         </v-card>
@@ -49,7 +57,7 @@
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
-                  <span class="headline">没有未审核的医师</span>
+                  <span class="headline">没有药师</span>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -58,7 +66,7 @@
       </v-flex>
     </v-layout>
     <div class="text-xs-center">
-      <v-dialog v-model="dialog" max-width="500">
+      <v-dialog v-model="dialog" width="500">
         <v-card>
           <v-card-title>
             <v-img :src="img" contain></v-img>
@@ -87,6 +95,7 @@
 export default {
   data: () => ({
     items: [],
+    ys: null,
     snackbar: false,
     color: "blue",
     mode: "",
@@ -96,7 +105,7 @@ export default {
     dialog: null
   }),
   mounted() {
-    this.$axios.get("/api/v1/yishi/yisunrev").then(res => {
+    this.$axios.get("api/v1/yishis").then(res => {
       if (res.data.data) this.items = res.data.data;
     });
   },
@@ -112,6 +121,12 @@ export default {
           this.snackbar = true;
         }
       });
+    },
+    edit(e){
+
+    },
+    remove(id){
+
     },
     show(src) {
       this.img = src;
