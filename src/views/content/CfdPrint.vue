@@ -18,13 +18,17 @@
     </div>
     <v-container fluid>
       <v-card align-center justify-center>
-        <v-select v-model="mendian" :items="items" label="选择门店"></v-select>
-
-        <v-text-field label="开始日期" v-model="begtime" placeholder="2020-03-01"></v-text-field>
-
-        <v-text-field label="结束日期" v-model="endtime" placeholder="2020-03-15"></v-text-field>
-
-        <v-btn class="ma-2" tile color="indigo" dark @click="querycf">查询</v-btn>
+        <v-overflow-btn
+          class="my-2"
+          :items="items"
+          label=".输入查询"
+          editable
+          item-value="text"
+          v-model="mendian"
+        ></v-overflow-btn>
+        <v-date-picker v-model="begtime"></v-date-picker>
+        <v-date-picker v-model="endtime"></v-date-picker>
+        <v-btn class="ma-2" tile color="indigo" :disabled="!qmc" dark @click="querycf">查询</v-btn>
 
         <v-btn
           class="ma-2"
@@ -131,10 +135,6 @@ export default {
     desserts: []
   }),
   mounted() {
-    // this.$axios.get("/api/v1/presuribymonth").then(res => {
-    //   if (res.data.data) this.desserts = res.data.data;
-    //   this.progress = false;
-    // });
     this.$axios.get("/api/v1/mendian/mclist").then(res => {
       if (res.data.data) this.items = res.data.data;
       this.progress = false;

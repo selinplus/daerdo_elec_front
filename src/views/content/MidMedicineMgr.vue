@@ -2,7 +2,7 @@
   <v-container id="create">
     <v-layout row flex>
       <v-flex xs6 sm6 md6 lg6>
-        <v-file-input show-size label="批量导入药品" v-model="file"></v-file-input>
+        <v-file-input show-size label="批量导入药品" name = "file" v-model="file"></v-file-input>
       </v-flex>
       <v-flex xs2 sm2 md2 lg2>
         <v-btn flat icon color="deep-blue" :disabled="file==null" @click="uploadFile">
@@ -196,6 +196,24 @@ export default {
     uploadFile(){
         // eslint-disable-next-line no-console
         console.log(this.file)
+        let param = new FormData(); //创建form对象
+        param.append('file',this.file);//通过append向form对象添加数据
+        // eslint-disable-next-line no-console
+        console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+        let config = {
+          headers:{'Content-Type':'multipart/form-data'}
+        }; //添加请求头
+        this.$axios.post('api/v1/materiamedica/impmd',param,config)
+          .then(response=>{
+             if (res.data.code == 200) {
+              this.text = "导入" + this.file + "成功";
+              this.snackbar = true;
+              this.$refs.form.reset();
+            } else {
+              this.text = "导入" + this.file + "失败";
+              this.snackbar = true;
+            }
+          })
     },
     download(){
       var src = window.location.protocol + "//" + window.location.host + "/export/tcm.xlsx";

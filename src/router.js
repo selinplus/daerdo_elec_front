@@ -3,9 +3,7 @@ import Router from 'vue-router'
 import Index from './views/Index.vue'
 import Home from './views/Home.vue'
 import Welcome from './views/content/Welcome.vue'
-import YsReview from './views/content/YsReview.vue'
 import YsUnreview from './views/content/YsUnreview.vue'
-import YaosReview from './views/content/YaosReview.vue'
 import YaosUnreview from './views/content/YaosUnreview.vue'
 import AddMedicine from './views/content/AddMedicine.vue'
 import CfdPrint from './views/content/CfdPrint.vue'
@@ -37,33 +35,23 @@ let constRouter = [
         component: Welcome,
       },
       {
-        path: 'ysreview',
-        name: '已审核医师',
-        component: YsReview,
-      },
-      {
         path: 'ysunreview',
-        name: '未审核医师',
+        name: '医师管理',
         component: YsUnreview,
-      },
-      {
-        path: 'yaosreview',
-        name: '已审核医师',
-        component: YaosReview,
-      },
+      },     
       {
         path: 'yaosunreview',
-        name: '未审核医师',
+        name: '药师管理',
         component: YaosUnreview,
       },
       {
         path: 'medicine',
-        name: '增加药品',
+        name: '药品管理',
         component: AddMedicine,
       },
       {
         path: 'midmedicine',
-        name: '增加中药材',
+        name: '中药材管理',
         component: AddMidMedicine,
       },
       {
@@ -73,8 +61,13 @@ let constRouter = [
       },
       {
         path: 'mendian',
-        name: '药店信息',
+        name: '药店管理',
         component: MendianMgr,
+      },
+      {
+        path: 'mgroup',
+        name: '药店分组',
+        component: MendianGroupMgr,
       },
       {
         path: 'statis',

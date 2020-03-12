@@ -93,9 +93,12 @@
               <v-text-field v-model="ys.zyzbm" label="执业证编码" required></v-text-field>
               <v-text-field v-model="ys.zydw" label="职业单位" required></v-text-field>
               <v-text-field v-model="ys.dept" label="所在科室" required></v-text-field>
-              <v-file-input show-size label="执业证照片" v-model="ys.zyz_uri"></v-file-input>
-              <v-file-input show-size label="资格证照片" v-model="ys.zgz_uri"></v-file-input>
-              <v-file-input show-size label="头像" v-model="ys.avator_uri"></v-file-input>              
+              <v-container fluid><v-file-input show-size label="执业证照片" name="image" v-model="zyz_uri"></v-file-input><v-btn icon @click="upi('zyz')"><v-icon>upload</v-icon></v-btn></v-container>
+              <v-container fluid><v-file-input show-size label="资格证照片" name="image" v-model="zgz_uri"></v-file-input><v-btn icon @click="upi('zgz')"><v-icon>upload</v-icon></v-btn></v-container>
+               <v-container fluid><v-file-input show-size label="头像" name="image" v-model="avator_uri"></v-file-input><v-btn icon @click="upi('ava')"><v-icon>upload</v-icon></v-btn></v-container>
+              <v-text-input type="hidden" v-model="ys.zyz_uri"></v-text-input>
+              <v-text-input type="hidden"  v-model="ys.zgz_uri"></v-text-input>
+              <v-text-input type="hidden" v-model="ys.avator_uri"></v-text-input>                            
             </v-form>
           </v-card-text>
           <v-divider></v-divider>
@@ -105,7 +108,7 @@
             <v-btn @click="editSave">保存</v-btn>
           </v-card-actions>
         </v-card>
-      </v-dialog>
+      </v-dialog>      
     </div>
     <v-snackbar
       v-model="snackbar"
@@ -129,6 +132,9 @@ export default {
     mode: "",
     timeout: 3000,
     text: "",
+    zgz_uri:null,
+    zyz_uri:null,
+    avator_uri:null,
     dialog: null,
     dialog1: null,
     img: ''
@@ -156,11 +162,95 @@ export default {
         }
       });
     },
+    upi(s){
+       let param = new FormData(); 
+        if(s ==="zyz" && this.zyz_uri){       
+            param.append('file',this.zyz_uri);
+        }
+         if(s ==="zgz" && this.zgz_uri){       
+            param.append('file',this.zgz_uri);
+        }
+         if(s ==="ava" && this.avator_uri){       
+            param.append('file',this.avator_uri);
+        }
+        let config = {
+          headers:{'Content-Type':'multipart/form-data'}
+        }; //添加请求头
+        this.$axios.post('upload',param,config)
+          .then(response=>{
+             if (res.data.code == 200) {
+              this.text = "上传" + this.file + "成功";
+              this.snackbar = true;
+              if(s==="zyz")
+                  this.ys.zyz_uri = res.data.data.image_url;
+              if(s==="zgz")
+                 this.ys.zgz_uri = res.data.data.image_url;
+              if(s==="ava")
+                 this.ys.avator_uri = res.data.data.image_url;
+            } else {
+              this.text = "上传" + this.file + "失败";
+              this.snackbar = true;
+            }
+          })
+    },
     edit(e){
-
+        this.ys = e
+        this.dialog1 = !this.dialog1
+    },
+    editSave(){
+        if (this.ys.name && this.ys.username && this.ys.password && this.ys.sfzh&&this.ys.zyzbm&&this.zgzbm&&this.zydw&&this.dept) {
+        this.$axios
+          .post("api/v1/yaoshis", {
+            id: this.ys.id,
+            name: this.ys.name,
+            username: this.ys.username,
+            password: this.ys.password,
+            sfzh: this.ys.sfzh,
+            zyzbm:this.ys.zyzbm,
+            zgzbm:this.ys.zgzbm,
+            zydw:this.ys.zydw,
+            detp:this.ys.dept,
+            zyz_uri:this.ys.zyz_uri,
+            zgz_uri:this.ys.zgz_uri,
+            avator_uri:this.ys.avator_uri,
+          })
+          .then(res => {
+            if (res.data.code == 200) {
+              this.text = "修改" + this.med.mc + "成功";
+              this.snackbar = true;
+              this.$refs.form.reset();
+            } else {
+              this.text = "修改" + this.med.mc + "失败";
+              this.snackbar = true;
+            }
+          });
+      }else{
+         this.text = "项目不能为空";
+              this.snackbar = true;
+      }
     },
     remove(id){
-
+           this.$axios
+          .get("api/v1/yaoshi/del?id="+id)
+          .then(res => {
+            if (res.data.code == 200) {
+              this.text = "删除成功";
+              this.snackbar = true;
+              this.removeItem(this.items, id)
+            } else {
+              this.text = "删除失败";
+              this.snackbar = true;
+            }
+          });
+    },
+     removeItem(col, id){
+      col.forEach((e, i) => {
+          if(e.id === id){
+            let pre = col.slice(0,i)
+            let end = col.slice(i+1)
+            col = pre.concat(end)
+          }
+      })
     },
     show(src) {
       this.dialog = !this.dialog;

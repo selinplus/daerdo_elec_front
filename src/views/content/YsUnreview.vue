@@ -57,7 +57,7 @@
             <v-container fill-height fluid>
               <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
-                  <span class="headline">没有药师</span>
+                  <span class="headline">没有医师</span>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -78,6 +78,37 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="dialog1" width="500">
+        <v-card>
+          <v-card-title class="headline amber lighten-2" primary-title>修改医师</v-card-title>
+          <v-card-text>
+            <v-form ref="form" lazy-validation>
+              <v-text-field v-model="ys.name" :counter="50"  label="姓名" required></v-text-field>
+              <v-text-field v-model="ys.username" label="账号" required></v-text-field>
+              <v-text-field v-model="ys.password" label="密码" required></v-text-field>
+              <v-text-field v-model="ys.sfzh" label="身份证号" required></v-text-field>
+              <v-text-field v-model="ys.zyzbm" label="执业证编码" required></v-text-field>
+              <v-text-field v-model="ys.zgzbm" label="资格证编码" required></v-text-field>
+              <v-text-field v-model="ys.mobile" label="手机" required></v-text-field>
+              <v-text-field v-model="ys.zyzbm" label="执业证编码" required></v-text-field>
+              <v-text-field v-model="ys.zydw" label="职业单位" required></v-text-field>
+              <v-text-field v-model="ys.dept" label="所在科室" required></v-text-field>
+              <v-container fluid><v-file-input show-size label="执业证照片" name="image" v-model="zyz_uri"></v-file-input><v-btn icon @click="upi('zyz')"><v-icon>upload</v-icon></v-btn></v-container>
+              <v-container fluid><v-file-input show-size label="资格证照片" name="image" v-model="zgz_uri"></v-file-input><v-btn icon @click="upi('zgz')"><v-icon>upload</v-icon></v-btn></v-container>
+               <v-container fluid><v-file-input show-size label="头像" name="image" v-model="avator_uri"></v-file-input><v-btn icon @click="upi('ava')"><v-icon>upload</v-icon></v-btn></v-container>
+              <v-text-input type="hidden" v-model="ys.zyz_uri"></v-text-input>
+              <v-text-input type="hidden"  v-model="ys.zgz_uri"></v-text-input>
+              <v-text-input type="hidden" v-model="ys.avator_uri"></v-text-input>                            
+            </v-form>
+          </v-card-text>
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="editSave">保存</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>      
     </div>
     <v-snackbar
       v-model="snackbar"
@@ -97,12 +128,16 @@ export default {
     items: [],
     ys: null,
     snackbar: false,
-    color: "blue",
+    color: "black",
     mode: "",
     timeout: 3000,
     text: "",
-    img: '',
-    dialog: null
+    zgz_uri:null,
+    zyz_uri:null,
+    avator_uri:null,
+    dialog: null,
+    dialog1: null,
+    img: ''
   }),
   mounted() {
     this.$axios.get("api/v1/yishis").then(res => {
@@ -115,6 +150,11 @@ export default {
         if (res.data.code == 200) {
           this.text = "审核成功";
           this.snackbar = true;
+          this.items.forEach(item => {
+            if (item.ID == id) {
+              this.items.pop(item);
+            }
+          });
         } else {
           this.color = "red";
           this.text = "审核未成功";
@@ -122,15 +162,99 @@ export default {
         }
       });
     },
+    upi(s){
+       let param = new FormData(); 
+        if(s ==="zyz" && this.zyz_uri){       
+            param.append('file',this.zyz_uri);
+        }
+         if(s ==="zgz" && this.zgz_uri){       
+            param.append('file',this.zgz_uri);
+        }
+         if(s ==="ava" && this.avator_uri){       
+            param.append('file',this.avator_uri);
+        }
+        let config = {
+          headers:{'Content-Type':'multipart/form-data'}
+        }; //添加请求头
+        this.$axios.post('upload',param,config)
+          .then(response=>{
+             if (res.data.code == 200) {
+              this.text = "上传" + this.file + "成功";
+              this.snackbar = true;
+              if(s==="zyz")
+                  this.ys.zyz_uri = res.data.data.image_url;
+              if(s==="zgz")
+                 this.ys.zgz_uri = res.data.data.image_url;
+              if(s==="ava")
+                 this.ys.avator_uri = res.data.data.image_url;
+            } else {
+              this.text = "上传" + this.file + "失败";
+              this.snackbar = true;
+            }
+          })
+    },
     edit(e){
-
+        this.ys = e
+        this.dialog1 = !this.dialog1
+    },
+    editSave(){
+        if (this.ys.name && this.ys.username && this.ys.password && this.ys.sfzh&&this.ys.zyzbm&&this.zgzbm&&this.zydw&&this.dept) {
+        this.$axios
+          .post("api/v1/yishis", {
+            id: this.ys.id,
+            name: this.ys.name,
+            username: this.ys.username,
+            password: this.ys.password,
+            sfzh: this.ys.sfzh,
+            zyzbm:this.ys.zyzbm,
+            zgzbm:this.ys.zgzbm,
+            zydw:this.ys.zydw,
+            detp:this.ys.dept,
+            zyz_uri:this.ys.zyz_uri,
+            zgz_uri:this.ys.zgz_uri,
+            avator_uri:this.ys.avator_uri,
+          })
+          .then(res => {
+            if (res.data.code == 200) {
+              this.text = "修改" + this.med.mc + "成功";
+              this.snackbar = true;
+              this.$refs.form.reset();
+            } else {
+              this.text = "修改" + this.med.mc + "失败";
+              this.snackbar = true;
+            }
+          });
+      }else{
+         this.text = "项目不能为空";
+              this.snackbar = true;
+      }
     },
     remove(id){
-
+           this.$axios
+          .get("api/v1/yishi/del?id="+id)
+          .then(res => {
+            if (res.data.code == 200) {
+              this.text = "删除成功";
+              this.snackbar = true;
+              this.removeItem(this.items, id)
+            } else {
+              this.text = "删除失败";
+              this.snackbar = true;
+            }
+          });
+    },
+     removeItem(col, id){
+      col.forEach((e, i) => {
+          if(e.id === id){
+            let pre = col.slice(0,i)
+            let end = col.slice(i+1)
+            col = pre.concat(end)
+          }
+      })
     },
     show(src) {
-      this.img = src;
       this.dialog = !this.dialog;
+      this.img = src;
     }
   }
 };

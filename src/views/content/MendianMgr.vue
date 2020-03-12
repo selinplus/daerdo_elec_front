@@ -23,6 +23,9 @@
             <v-flex xs12 sm9 md9>
               <v-text-field label="版本" v-model="md.version"></v-text-field>
             </v-flex>
+             <v-flex xs12 sm9 md9>
+              <v-text-field label="有效期" v-model="md.expired_at"></v-text-field>
+            </v-flex>
           </v-layout>
           <v-divider></v-divider>
 
@@ -79,17 +82,13 @@
           <td class="text-xs-right">{{ props.item.username }}</td>
           <td class="text-xs-right">{{ props.item.password }}</td>
           <td class="text-xs-right">{{ props.item.version }}</td>
+          <td class="text-xs-right">{{ props.item.expired_at }}</td>
           <td class>
             <v-btn @click="show(props.item.ID)">
               <v-icon small>edit</v-icon>
             </v-btn>
           </td>
-          <td class>
-            <v-btn @click="expired(props.item.ID,props.item.yxbz)">
-              <v-icon v-if="props.item.yxbz==0" small>add_circle</v-icon>
-              <v-icon v-else small>remove_circle</v-icon>
-            </v-btn>
-          </td>
+          
         </tr>
       </template>
     </v-data-table>
@@ -129,7 +128,7 @@ export default {
       { text: "密码", value: "password" },
       { text: "版本", value: "version" },
       { text: "操作", value: "ID" },
-      { text: "有效", value: "yxbz" }
+      { text: "有效期", value: "expired_at" }
     ],
     desserts: []
   }),
@@ -197,7 +196,8 @@ export default {
           dianhua: this.md.dianhua,
           username: this.md.username,
           password: this.md.password,
-          version: this.md.version
+          version: this.md.version,
+          expired_at:this.md.expired_at,
         })
         .then(res => {
           if (res.data.code == 200) {
