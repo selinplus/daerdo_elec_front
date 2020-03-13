@@ -2,7 +2,7 @@
   <v-container id="create">
     <v-layout row flex>
       <v-flex xs6 sm6 md6 lg6>
-        <v-file-input show-size label="批量导入药品" name = "file" v-model="file"></v-file-input>
+        <v-text-field show-size label="批量导入药品" type="file" name = "file" v-model="file"></v-text-field>
       </v-flex>
       <v-flex xs2 sm2 md2 lg2>
         <v-btn flat icon color="deep-blue" :disabled="file==null" @click="uploadFile">
@@ -11,7 +11,7 @@
       </v-flex>
       <v-flex xs2 sm2 md2 lg2>
         <v-btn flat icon color="deep-blue" @click="download">
-          下载模板
+          <v-icon>cloud_download</v-icon>
         </v-btn>
       </v-flex>
     </v-layout>
@@ -162,9 +162,6 @@ export default {
         value: "id"
       },
       { text: "名称", value: "mc" },
-      { text: "规格", value: "style" },
-      { text: "单位", value: "unit" },
-      { text: "产地", value: "source" }
     ],
     desserts: []
   }),
@@ -204,7 +201,7 @@ export default {
           headers:{'Content-Type':'multipart/form-data'}
         }; //添加请求头
         this.$axios.post('api/v1/materiamedica/impmd',param,config)
-          .then(response=>{
+          .then(res=>{
              if (res.data.code == 200) {
               this.text = "导入" + this.file + "成功";
               this.snackbar = true;
@@ -244,7 +241,7 @@ export default {
         }
       }
     },
-    edit(){//打开修改药品窗口
+    editMed(){//打开修改药品窗口
         if (this.selected.length !== 1){
             this.text = "请选择修改的药";
             this.snackbar = true;
@@ -275,7 +272,7 @@ export default {
               this.snackbar = true;
       }
     },
-    deleteMed(){//删除药品
+    delMed(){//删除药品
        if (this.selected.length!==1){
           let sid = this.selected[0].id
            this.$axios

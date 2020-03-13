@@ -93,12 +93,12 @@
               <v-text-field v-model="ys.zyzbm" label="执业证编码" required></v-text-field>
               <v-text-field v-model="ys.zydw" label="职业单位" required></v-text-field>
               <v-text-field v-model="ys.dept" label="所在科室" required></v-text-field>
-              <v-container fluid><v-file-input show-size label="执业证照片" name="image" v-model="zyz_uri"></v-file-input><v-btn icon @click="upi('zyz')"><v-icon>upload</v-icon></v-btn></v-container>
-              <v-container fluid><v-file-input show-size label="资格证照片" name="image" v-model="zgz_uri"></v-file-input><v-btn icon @click="upi('zgz')"><v-icon>upload</v-icon></v-btn></v-container>
-               <v-container fluid><v-file-input show-size label="头像" name="image" v-model="avator_uri"></v-file-input><v-btn icon @click="upi('ava')"><v-icon>upload</v-icon></v-btn></v-container>
-              <v-text-input type="hidden" v-model="ys.zyz_uri"></v-text-input>
-              <v-text-input type="hidden"  v-model="ys.zgz_uri"></v-text-input>
-              <v-text-input type="hidden" v-model="ys.avator_uri"></v-text-input>                            
+              <v-layout row fluid><v-text-field show-size label="执业证照片" type="file" name="image" v-model="zyz_uri"></v-text-field><v-btn icon :disabled="!this.zyz_uri" @click="upi('zyz')"><v-icon>cloud_upload</v-icon></v-btn></v-layout>
+              <v-layout row fluid><v-text-field show-size label="资格证照片" type="file" name="image" v-model="zgz_uri"></v-text-field><v-btn icon :disabled="!this.zgz_uri" @click="upi('zgz')"><v-icon>cloud_upload</v-icon></v-btn></v-layout>
+              <v-layout row fluid><v-text-field show-size label="头像" type="file" name="image" v-model="avator_uri"></v-text-field><v-btn icon :disabled="!this.avator_uri" @click="upi('ava')"><v-icon>cloud_upload</v-icon></v-btn></v-layout>
+              <v-text-field type="hidden" v-model="ys.zyz_uri"></v-text-field>
+              <v-text-field type="hidden"  v-model="ys.zgz_uri"></v-text-field>
+              <v-text-field type="hidden" v-model="ys.avator_uri"></v-text-field>                                    
             </v-form>
           </v-card-text>
           <v-divider></v-divider>
@@ -126,7 +126,7 @@
 export default {
   data: () => ({
     items: [],
-    ys: null,
+    ys: {},
     snackbar: false,
     color: "black",
     mode: "",

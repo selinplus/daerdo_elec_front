@@ -5,7 +5,7 @@
         <v-card>
           <v-card-title class="headline lighten-2" primary-title>处方单</v-card-title>
           <div id="myImg">
-            <v-img aspect-ratio max-width="400" max-height="600" :src="src"></v-img>
+            <v-img aspect-ratio max-width="350" max-height="700" :src="src"></v-img>
           </div>
           <v-divider></v-divider>
 
@@ -26,18 +26,60 @@
           item-value="text"
           v-model="mendian"
         ></v-overflow-btn>
-        <v-date-picker v-model="begtime"></v-date-picker>
-        <v-date-picker v-model="endtime"></v-date-picker>
-        <v-btn class="ma-2" tile color="indigo" :disabled="!qmc" dark @click="querycf">查询</v-btn>
-
-        <v-btn
-          class="ma-2"
-          tile
-          color="indigo"
-          :disabled="!desserts.length>0"
-          dark
-          @click="downcf"
-        >下载</v-btn>
+        <v-layout row wrap>
+          <v-menu
+              v-model="menu1"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+            >
+            <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="begtime"
+                  label="起始日期"
+                  prepend-icon="event"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+            </template>
+            <v-date-picker v-model="begtime" @input="menu1 = false"></v-date-picker>
+          </v-menu>
+          <v-menu
+              v-model="menu2"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+            >
+            <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="endtime"
+                  label="结束日期"
+                  prepend-icon="event"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+            </template>
+            <v-date-picker v-model="endtime" @input="menu2 = false"></v-date-picker>
+          </v-menu>
+          <v-btn class="ma-2" tile color="blue" :disabled="!mendian" dark @click="querycf">查询</v-btn>
+          <v-btn
+            class="ma-2"
+            tile
+            color="indigo"
+            :disabled="!desserts.length"
+            dark
+            @click="downcf"
+          >下载</v-btn>
+        </v-layout>
+        
       </v-card>
       <v-spacer></v-spacer>
     </v-container>
@@ -107,11 +149,13 @@ export default {
     fab: false,
     dialog: false,
     snackbar: false,
+    menu1:false,
+    menu2:false,
     color: "black",
     timeout: 3000,
     text: "",
-    begtime: "",
-    endtime: "",
+    begtime: new Date().toISOString().substr(0, 10),
+    endtime: new Date().toISOString().substr(0, 10),
     src: "",
     pagination: {
       sortBy: "ID"

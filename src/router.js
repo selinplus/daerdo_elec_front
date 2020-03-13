@@ -5,12 +5,13 @@ import Home from './views/Home.vue'
 import Welcome from './views/content/Welcome.vue'
 import YsUnreview from './views/content/YsUnreview.vue'
 import YaosUnreview from './views/content/YaosUnreview.vue'
-import AddMedicine from './views/content/AddMedicine.vue'
+import MedicineMgr from './views/content/MedicineMgr.vue'
 import CfdPrint from './views/content/CfdPrint.vue'
 import Statis from './views/content/Statis.vue'
 import MendianMgr from './views/content/MendianMgr.vue'
 import Setting from './views/content/Setting.vue'
-import AddMidMedicine from './views/content/AddMidMedicine.vue'
+import MidMedicineMgr from './views/content/MidMedicineMgr.vue'
+import MendianGroupMgr from './views/content/MendianGroupMgr.vue'
 import store from './store'
 Vue.use(Router)
 
@@ -47,12 +48,12 @@ let constRouter = [
       {
         path: 'medicine',
         name: '药品管理',
-        component: AddMedicine,
+        component: MedicineMgr,
       },
       {
         path: 'midmedicine',
         name: '中药材管理',
-        component: AddMidMedicine,
+        component: MidMedicineMgr,
       },
       {
         path: 'cfd',

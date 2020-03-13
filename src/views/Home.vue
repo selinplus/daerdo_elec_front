@@ -101,11 +101,11 @@ export default {
       { icon: "verified_user", text: "医师管理", path: "/home/ysunreview" },
       { icon: "rate_review", text: "药师管理", path: "/home/yaosunreview" },
       { divider: true },
-      { icon: "group_add", text: "药品管理", path: "/home/medicine" },
+      { icon: "note_add", text: "药品管理", path: "/home/medicine" },
       { icon: "group_add", text: "中药材管理", path: "/home/midmedicine" },
       { divider: true },
       { icon: "add_shopping_cart", text: "药店管理", path: "/home/mendian" },
-      { icon: "add_shopping_cart", text: "账号同属", path: "/home/mendian" },
+      { icon: "group", text: "账号同属", path: "/home/mgroup" },
 
       { divider: true },
       { heading: "运行功能" },

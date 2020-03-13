@@ -4,29 +4,37 @@
       <v-dialog v-model="dialog" max-width="400">
         <v-card>
           <v-card-title class="headline lighten-2" primary-title>药店信息</v-card-title>
-          <v-layout row wrap>
-            <v-flex xs12 sm9 md9>
+          <v-card-text>            
               <v-text-field label="名称" v-model="md.mc"></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm9 md9>
+              <v-menu
+                  v-model="menu1"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  lazy
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  min-width="290px"
+                >
+                <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="md.expired_at"
+                      label="有效日期"
+                      prepend-icon="event"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                </template>
+                <v-date-picker v-model="md.expired_at" @input="menu1 = false"></v-date-picker>
+              </v-menu>     
               <v-text-field label="负责人" v-model="md.fzr"></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm9 md9>
               <v-text-field label="电话" v-model="md.dianhua"></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm9 md9>
               <v-text-field label="帐号" v-model="md.username"></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm9 md9>
               <v-text-field label="密码" v-model="md.password"></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm9 md9>
               <v-text-field label="版本" v-model="md.version"></v-text-field>
-            </v-flex>
-             <v-flex xs12 sm9 md9>
-              <v-text-field label="有效期" v-model="md.expired_at"></v-text-field>
-            </v-flex>
-          </v-layout>
+              <!-- <v-text-field label="有效期" v-model="md.expired_at"></v-text-field> -->
+                 
+          </v-card-text>
           <v-divider></v-divider>
 
           <v-card-actions>
@@ -108,6 +116,7 @@ export default {
     color: "black",
     timeout: 3000,
     item: null,
+    menu1:false,
     text: "",
     src: "",
     md: {},
